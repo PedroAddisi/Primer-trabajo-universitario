@@ -15,7 +15,7 @@ public class Isla {
 	double y;
 	Image img1;
 	Color c;
-	public Isla(double x,double y,int alto,int largo,Color c) {
+	public Isla(double x, double y, int alto, int largo, Color c) {
 		this.x=x;
 		this.y=y;
 		this.alto=alto;
@@ -24,7 +24,7 @@ public class Isla {
 		//img1=Herramientas.cargarImagen("elfondo.jpg");
 	}
 	public void dibujarisla(Entorno entorno) {
-		entorno.dibujarRectangulo(x, y, alto, largo, 0,c);
+		entorno.dibujarRectangulo(x, y, alto, largo, 0, c);
 		//entorno.dibujarImagen(img1, x, y, angulo);
 	}
 	}

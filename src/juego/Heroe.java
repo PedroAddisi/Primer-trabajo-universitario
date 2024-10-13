@@ -13,7 +13,7 @@ public class Heroe {
 	Color c;
 	double angulo;
 	boolean enisla=false;
-	public Heroe(double x,double y,int largo,int alto,Color c) {
+	public Heroe(double x, double y, int largo, int alto, Color c) {
 		this.x=x;
 		this.y=y;
 		this.largo=largo;
