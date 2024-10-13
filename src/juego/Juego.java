@@ -18,18 +18,20 @@ public class Juego extends InterfaceJuego
 	Isla[] islas=new Isla[15];
 	Heroe heroe;
 
-	//
+	//gravedad para que caiga 
 	void gravedad() {
+		// Just a comment
 		heroe.y+=0.5;
 	}
-	boolean colision(double x1, double y1,double x2, double y2, double dist) {
+	boolean colision(double x1, double y1,double x2, double y2, double dist) {//no funca
 		return (x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)< dist*dist;
 		}
-	boolean colisionprueba(double x1, double y1,double A1,double L1,double x2, double y2,double A2,double L2) {
+	boolean colisionprueba(double x1, double y1,double A1,double L1,double x2, double y2,double A2,double L2) {//no funca 
 		if(x1 + L1 >= x2 && x1 <= x2 + L2 && y1 + A1 >= y2 && y1 <= y2 + A2) {
 			return true;
 		}
 		return false;
+		//preguntar opcion de perimetro
 	}
 	
 	Juego()
