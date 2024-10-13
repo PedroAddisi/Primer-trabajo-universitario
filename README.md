@@ -9,3 +9,5 @@ Dia 2
 .se probaron multiples funciones de colisión sin resiltado bueno en ninguno
 .se organizo y comento el codigo para mas prolijidad
 .se crearon mas dudas sobre colision
+Dia 3
+.se finalizo colision con algunos problemas a resolver.
