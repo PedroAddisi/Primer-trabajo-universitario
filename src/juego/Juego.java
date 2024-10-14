@@ -21,20 +21,10 @@ public class Juego extends InterfaceJuego
 	int tickCount = 0;// Pruebas borrar cuando termine
 	int largo = 112;
 	int alto = 36;
-	double gravedad= 0.5;
 	char visionHeroe;
 	//
-
-	// gravedad para que caiga
-	void activarGravedadHeroe() {
-		heroe.y +=gravedad ;
-	}
 	//
 	//Colision
-	boolean colisionPrueba(double x1, double y1, double l1, double a1, double x2, double y2, double l2, double a2) {
-																													
-		return x1 - a1 / 2 <= x2 + a2 / 2  && x1 + a1 / 2 >= x2 - a2 / 2 && y1 - l1 / 2 <= y2 + l2 / 2 && y1 + l1 / 2 >= y2 - l2 / 2;
-	}
 	//
 	//Generacion de islas
 	public Isla[] generadorIslas () {
@@ -119,20 +109,13 @@ public class Juego extends InterfaceJuego
 			visionHeroe = entorno.TECLA_IZQUIERDA;
 			//preguntaria si en la proxima mover izquierda voy a colisionar por izquierda si es asi no te dejo mover izquierda
 		}
-		boolean estaTocandoHeroe=false;
-		for (Isla islas : islas) {
-			if (colisionPrueba(islas.x, islas.y, islas.largo, islas.alto, heroe.x, heroe.y, heroe.largo, heroe.alto)) {
-				estaTocandoHeroe=true;
 				if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
 					heroe.Salto();
-
 				}
-				System.out.println("Colision. Tick: " + tickCount + "!");// ESTA EN PRUEBA
-			} 
-		}
-		if(!estaTocandoHeroe) {
-			activarGravedadHeroe();
-		}
+				//System.out.println("Colision. Tick: " + tickCount + "!");// ESTA EN PRUEB
+				heroe.colisionConIsla(islas);
+				heroe.gravedadHeroe(islas);
+		//
 		//Generaracion y movimiento de gnomo 
 		gnomo.dibujargnomo(entorno);
 		gnomo.movimiento(islas);
