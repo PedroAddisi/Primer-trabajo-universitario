@@ -12,7 +12,7 @@ public class Juego extends InterfaceJuego
 
 {
 	private Entorno entorno;
-	//
+	//Variables
 	Image imfondo;
 	Isla isla;
 	Isla[] islas = new Isla[15];
@@ -21,18 +21,53 @@ public class Juego extends InterfaceJuego
 	int tickCount = 0;// Pruebas borrar cuando termine
 	int largo = 112;
 	int alto = 36;
+	double gravedad= 0.5;
 	char visionHeroe;
+	//
 
 	// gravedad para que caiga
-	void activarGravedad() {
-		// Just a comment
-		heroe.y += 0.5;
+	void activarGravedadHeroe() {
+		heroe.y +=gravedad ;
 	}
 	//
-	boolean colisionPrueba(double x1, double y1, double l1, double a1, double x2, double y2, double l2, double a2) {// no
-																													// funca
+	//Colision
+	boolean colisionPrueba(double x1, double y1, double l1, double a1, double x2, double y2, double l2, double a2) {
+																													
 		return x1 - a1 / 2 <= x2 + a2 / 2  && x1 + a1 / 2 >= x2 - a2 / 2 && y1 - l1 / 2 <= y2 + l2 / 2 && y1 + l1 / 2 >= y2 - l2 / 2;
 	}
+	//
+	//Generacion de islas
+	public Isla[] generadorIslas () {
+	    Isla[] islas = new Isla[15];
+	    int ejeX= 96;
+	    int ejeY= 512;
+	    int indice= 0;
+	    int cantidadDeEspacios= 1;
+	    int numDeIslaEnFila= 1;
+	    int fila=5;
+	    while(fila>0){
+	        while (numDeIslaEnFila<=fila){
+	            if (numDeIslaEnFila == 1 && indice != 0){
+	                ejeY-=106;
+	            }
+	            else if (indice == 0) {
+	                islas[0]= new Isla (ejeX, ejeY, largo, alto, Color.red);
+	            }
+	            else if (indice !=0) {
+	                ejeX+= 152;
+	            }
+	        islas[indice]= new Isla(ejeX, ejeY, largo, alto, Color.red);
+	        indice++;
+	        numDeIslaEnFila++;
+	        }
+	    ejeX=96 + 76 * cantidadDeEspacios;
+	    cantidadDeEspacios++;
+	    numDeIslaEnFila= 1;
+	    fila--;
+	    }
+	    return islas;
+	    }
+	//
 
 	Juego() {
 
@@ -40,21 +75,7 @@ public class Juego extends InterfaceJuego
 		this.entorno = new Entorno(this, "Navecitas-Grupo Nr.", 800, 600);
 		//
 		// islas
-		islas[0] = new Isla(96, 512, largo, alto, Color.red);
-		islas[1] = new Isla(248, 512, largo, alto, Color.red);
-		islas[2] = new Isla(400, 512, largo, alto, Color.red);
-		islas[3] = new Isla(552, 512, largo, alto, Color.red);
-		islas[4] = new Isla(704, 512, largo, alto, Color.red);
-		islas[5] = new Isla(172, 406, largo, alto, Color.red);
-		islas[6] = new Isla(324, 406, largo, alto, Color.red);
-		islas[7] = new Isla(476, 406, largo, alto, Color.red);
-		islas[8] = new Isla(628, 406, largo, alto, Color.red);
-		islas[9] = new Isla(248, 300, largo, alto, Color.red);
-		islas[10] = new Isla(400, 300, largo, alto, Color.red);
-		islas[11] = new Isla(552, 300, largo, alto, Color.red);
-		islas[12] = new Isla(324, 194, largo, alto, Color.red);
-		islas[13] = new Isla(476, 194, largo, alto, Color.red);
-		islas[14] = new Isla(400, 88, largo, alto, Color.red);
+		islas=this.generadorIslas();
 		//
 		// Heroe
 		heroe = new Heroe(400, 475, 37, 12, Color.CYAN);
@@ -84,6 +105,7 @@ public class Juego extends InterfaceJuego
 		for (Isla islas : islas) {
 			islas.dibujarisla(entorno);
 		}
+		entorno.dibujarRectangulo(400, 52 , 40 ,36 ,0 ,Color.BLUE);
 		//
 		// GENERACION Y MOVIMIENTO DEL HEROE
 		heroe.dibujarheroe(entorno);
@@ -97,32 +119,26 @@ public class Juego extends InterfaceJuego
 			visionHeroe = entorno.TECLA_IZQUIERDA;
 			//preguntaria si en la proxima mover izquierda voy a colisionar por izquierda si es asi no te dejo mover izquierda
 		}
-		// aca va ir el if para el salto//
-		if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
-			heroe.Salto();
-
-		}
-		//Generar gnomo
-		gnomo.dibujargnomo(entorno);
-		//
-		//Camino alazar Gnomo
-		//Gravedad Gnomo
-		gnomo.colisionConIsla(islas);
-		gnomo.y+=1;
-		 if (gnomo.tocaConIsla) {
-			 System.out.println("COLISION DE GNOMO");
-		 }
-		//
 		boolean estaTocandoHeroe=false;
-		for (Isla islas : islas) {// Preguntar el problema no es de la funcion en si creo.
+		for (Isla islas : islas) {
 			if (colisionPrueba(islas.x, islas.y, islas.largo, islas.alto, heroe.x, heroe.y, heroe.largo, heroe.alto)) {
 				estaTocandoHeroe=true;
+				if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
+					heroe.Salto();
+
+				}
 				System.out.println("Colision. Tick: " + tickCount + "!");// ESTA EN PRUEBA
 			} 
 		}
 		if(!estaTocandoHeroe) {
-			activarGravedad();
+			activarGravedadHeroe();
 		}
+		//Generaracion y movimiento de gnomo 
+		gnomo.dibujargnomo(entorno);
+		gnomo.movimiento(islas);
+		gnomo.gravedadGnomos(islas);
+		gnomo.colisionConHeroe(heroe);
+		//
 	}
 
 	@SuppressWarnings("unused")

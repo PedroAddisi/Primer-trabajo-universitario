@@ -33,8 +33,8 @@ public class Heroe {
 		this.x += Math.cos(this.angulo) * (-velocidad);
 		this.y += Math.sin(this.angulo) * (-velocidad);
 	}
-	public void Salto() {//ver como hacer para que cuando se aprete saltar no se logre hacer de nuevo.
-		this.y-=10;
+	public void Salto() {
+		this.y-=120;
 		}
 	
 	

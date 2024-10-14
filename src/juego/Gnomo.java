@@ -30,34 +30,36 @@ public class Gnomo {
 		this.c=c;
 	}
 	public void dibujargnomo(Entorno entorno) {
-		entorno.dibujarRectangulo(x,y, alto, largo, 0, c);
+		entorno.dibujarRectangulo(x, y, alto, largo, 0, c);
 	}
 	public void elegirDireccion() {
 		Random derechaOIzquierda = new Random();
 		boolean direc = derechaOIzquierda.nextBoolean(); //Genero un booleano random
 		if (direc) { //Si es verdadero va para la derecha
-			this.direccion=1;
+			this.direccion= 1;
 		}
 		else {
-			this.direccion=-1;
+			this.direccion= -1;
 		}
 		//La velocidad se multiplicara por este numero para q camine hacia ese lado
 		this.velocidad = this.velocidad*this.direccion;
 	}
 	public void colisionConHeroe(Heroe h) {
-		if (Math.sqrt((this.x-h.x)*(this.x-h.x)+(this.y-h.y)*(this.y-h.y))<=12) {
-			this.tocaConHeroe=true;
-		}
-		else {
-			this.tocaConHeroe=false;
-		}
+			if(colisionPrueba(h.x, h.y ,h.largo, h.alto , this.x, this.y, this.largo, this.alto)) {
+				this.tocaConHeroe=true;
+			}
+			else{
+				this.tocaConHeroe=false;
+			}
 	}
 	public void colisionConIsla(Isla islas[]) {
-		for (Isla i: islas) {
-			if ((this.y==i.y) && ((i.x-i.largo/2)<=this.x) && (this.x<=(i.x+i.largo/2))){
+		for (Isla i : islas) {
+			if(colisionPrueba(i.x, i.y ,i.largo, i.alto , this.x, this.y, this.largo, this.alto)) {
 				this.tocaConIsla=true;
+				return;
 			}
 		}
+		this.tocaConIsla=false;
 	}
 	public void avanzarGnomo() {
 		this.x+=this.velocidad;
@@ -65,16 +67,22 @@ public class Gnomo {
 	public void gravedadGnomos(Isla[] islas) {
 		this.colisionConIsla(islas);
 		if (!this.tocaConIsla) {
-			this.y += 2;
+			this.y += 1;
 		}
 	}
-	public void movimiento(Isla[] islas) {
-		if(!this.tocaConIsla) {
+	public void movimiento (Isla[] islas) {
+		if (!this.tocaConIsla) {
 			this.gravedadGnomos(islas);
+			this.colisionConIsla(islas);
 			if(this.tocaConIsla) {
 				this.elegirDireccion();
 			}
 		}
 		this.avanzarGnomo();
 	}
+	boolean colisionPrueba(double x1, double y1, double l1, double a1, double x2, double y2, double l2, double a2) {
+		
+		return x1 - a1 / 2 <= x2 + a2 / 2  && x1 + a1 / 2 >= x2 - a2 / 2 && y1 - l1 / 2 <= y2 + l2 / 2 && y1 + l1 / 2 >= y2 - l2 / 2;
+	}
+	
 }
