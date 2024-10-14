@@ -17,6 +17,7 @@ public class Juego extends InterfaceJuego
 	Isla isla;
 	Isla[] islas = new Isla[15];
 	Heroe heroe;
+	Gnomo gnomo;
 	int tickCount = 0;// Pruebas borrar cuando termine
 	int largo = 112;
 	int alto = 36;
@@ -58,7 +59,9 @@ public class Juego extends InterfaceJuego
 		// Heroe
 		heroe = new Heroe(400, 475, 37, 12, Color.CYAN);
 		//
-
+		//Gnomo
+		gnomo = new Gnomo(350, 40, 37, 12, Color.green);
+		//
 		// Inicia el juego!
 		this.entorno.iniciar();
 	}
@@ -99,15 +102,25 @@ public class Juego extends InterfaceJuego
 			heroe.Salto();
 
 		}
+		//Generar gnomo
+		gnomo.dibujargnomo(entorno);
 		//
-		boolean estaTocando=false;
+		//Camino alazar Gnomo
+		//Gravedad Gnomo
+		gnomo.colisionConIsla(islas);
+		gnomo.y+=1;
+		 if (gnomo.tocaConIsla) {
+			 System.out.println("COLISION DE GNOMO");
+		 }
+		//
+		boolean estaTocandoHeroe=false;
 		for (Isla islas : islas) {// Preguntar el problema no es de la funcion en si creo.
 			if (colisionPrueba(islas.x, islas.y, islas.largo, islas.alto, heroe.x, heroe.y, heroe.largo, heroe.alto)) {
-				estaTocando=true;
+				estaTocandoHeroe=true;
 				System.out.println("Colision. Tick: " + tickCount + "!");// ESTA EN PRUEBA
 			} 
 		}
-		if(!estaTocando) {
+		if(!estaTocandoHeroe) {
 			activarGravedad();
 		}
 	}
