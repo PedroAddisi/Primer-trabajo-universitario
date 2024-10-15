@@ -10,21 +10,19 @@ import entorno.InterfaceJuego;
 
 public class Isla {
 	double x;
-	double alto;
-	double largo;
+	double alto=36;
+	double largo=112; //Estan al reves
 	double y;
 	Image img1;
 	Color c;
-	public Isla(double x, double y, int alto, int largo, Color c) {
+	public Isla(double x, double y, Color c) {
 		this.x=x;
 		this.y=y;
-		this.alto=alto;
-		this.largo=largo;
 		this.c=c;
 		//img1=Herramientas.cargarImagen("elfondo.jpg");
 		}
 	public void dibujarisla(Entorno entorno) {
-		entorno.dibujarRectangulo(x, y, alto, largo, 0, c);
+		entorno.dibujarRectangulo(x, y, largo, alto, 0, c);
 		//entorno.dibujarImagen(img1, x, y, angulo);
 		}
 	}
