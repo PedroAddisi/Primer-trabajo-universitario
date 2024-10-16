@@ -13,7 +13,6 @@ public class Juego extends InterfaceJuego
 {
 	private Entorno entorno;
 	//Variables
-	Image imfondo;
 	Isla isla;
 	Isla[] islas = new Isla[15];
 	Heroe heroe;
@@ -58,6 +57,8 @@ public class Juego extends InterfaceJuego
 	    return islas;
 	    }
 	//
+	Image imagenFondo;
+	Image casa;
 
 	Juego() {
 
@@ -73,6 +74,9 @@ public class Juego extends InterfaceJuego
 		//Gnomo
 		gnomo = new Gnomo(350, 40, 37, 12, Color.green);
 		//
+		imagenFondo = Herramientas.cargarImagen("elfondo.jpg");
+		casa = Herramientas.cargarImagen("casa.png");
+		
 		// Inicia el juego!
 		this.entorno.iniciar();
 	}
@@ -84,6 +88,8 @@ public class Juego extends InterfaceJuego
 	 * del TP para mayor detalle).
 	 */
 	public void tick() {
+		entorno.dibujarImagen(imagenFondo, 400, 300,0,1.8);
+		entorno.dibujarImagen(casa, 400,52,0,0.15);
 		tickCount += 1;// Pruebas borrar en final
 		// Generacion de Texto
 		entorno.cambiarFont("Arial", 32, Color.yellow);
@@ -95,26 +101,33 @@ public class Juego extends InterfaceJuego
 		for (Isla islas : islas) {
 			islas.dibujarisla(entorno);
 		}
-		entorno.dibujarRectangulo(400, 52 , 40 ,36 ,0 ,Color.BLUE);
 		//
 		// GENERACION Y MOVIMIENTO DEL HEROE
 		heroe.dibujarheroe(entorno);
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			heroe.moverAdelante();
-			visionHeroe = entorno.TECLA_DERECHA;
-			//preguntaria si en la proxima mover derecha voy a colisionar por dececha entonces no te dejo mover derecha 
+			visionHeroe = entorno.TECLA_DERECHA; 
 		}
 		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
 			heroe.moverAtras();
 			visionHeroe = entorno.TECLA_IZQUIERDA;
-			//preguntaria si en la proxima mover izquierda voy a colisionar por izquierda si es asi no te dejo mover izquierda
 		}
+		if(visionHeroe==entorno.TECLA_IZQUIERDA) {
 				if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
-					heroe.Salto();
+					heroe.saltando=true;
+					heroe.SaltoIzq(islas);
 				}
-				//System.out.println("Colision. Tick: " + tickCount + "!");// ESTA EN PRUEB
+		}
+		if(visionHeroe==entorno.TECLA_DERECHA) {
+			if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
+				heroe.saltando=true;
+				heroe.SaltoDer(islas);
+			}
+	}
+				heroe.saltando=false;
 				heroe.colisionConIsla(islas);
 				heroe.gravedadHeroe(islas);
+				//System.out.println("Colision. Tick: " + tickCount + "!");// ESTA EN PRUEBA
 		//
 		//Generaracion y movimiento de gnomo 
 		gnomo.dibujargnomo(entorno);
@@ -122,6 +135,10 @@ public class Juego extends InterfaceJuego
 		gnomo.gravedadGnomos(islas);
 		gnomo.colisionConHeroe(heroe);
 		//
+		System.out.println(heroe.tocaPorArriba(islas));
+		if (heroe.tocaPorArriba(islas)) {
+			System.out.println("TOCAAAAAAAAAAAA");
+		}
 	}
 
 	@SuppressWarnings("unused")

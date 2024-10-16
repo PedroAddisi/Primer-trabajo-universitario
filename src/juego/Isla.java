@@ -21,11 +21,11 @@ public class Isla {
 		this.alto=alto;
 		this.largo=largo;
 		this.c=c;
-		//img1=Herramientas.cargarImagen("elfondo.jpg");
+		img1=Herramientas.cargarImagen("isla.png");
 		}
 	public void dibujarisla(Entorno entorno) {
-		entorno.dibujarRectangulo(x, y, alto, largo, 0, c);
-		//entorno.dibujarImagen(img1, x, y, angulo);
+		entorno.dibujarRectangulo(x, y, alto, largo, 0,Color.red);;
+		//entorno.dibujarImagen(img1, x, y- 12, 0,0.4);
 		}
 	}
 		
