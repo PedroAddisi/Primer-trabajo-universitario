@@ -24,8 +24,8 @@ public class Isla {
 		img1=Herramientas.cargarImagen("isla.png");
 		}
 	public void dibujarisla(Entorno entorno) {
-		entorno.dibujarRectangulo(x, y, alto, largo, 0,Color.red);;
-		//entorno.dibujarImagen(img1, x, y- 12, 0,0.4);
+		//entorno.dibujarRectangulo(x, y, alto, largo, 0,Color.red);;
+		entorno.dibujarImagen(img1, x, y- 12, 0,0.4);
 		}
 	}
 		
