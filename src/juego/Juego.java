@@ -54,9 +54,13 @@ public class Juego extends InterfaceJuego
 	    }
 	    return islas;
 	    }
+<<<<<<< HEAD
 	//
 	Image imagenFondo;
 	Image casa;
+
+=======
+>>>>>>> 28c2aba956fdd89460fcd00406fdf4dbe5ac84a8
 	Juego() {
 
 		// Inicializa el objeto entorno
@@ -114,6 +118,7 @@ public class Juego extends InterfaceJuego
 					heroe.saltando=true;
 					heroe.SaltoIzq(islas);
 				}
+<<<<<<< HEAD
 		}
 		if(visionHeroe==entorno.TECLA_DERECHA) {
 			if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
@@ -125,9 +130,11 @@ public class Juego extends InterfaceJuego
 				heroe.colisionConIsla(islas);
 				heroe.gravedadHeroe(islas);
 				//System.out.println("Colision. Tick: " + tickCount + "!");// ESTA EN PRUEBA
+=======
 				//System.out.println("Colision. Tick: " + tickCount + "!");// ESTA EN PRUEB
 		heroe.colisionConIsla(islas);
 		heroe.gravedadHeroe(islas);
+>>>>>>> 28c2aba956fdd89460fcd00406fdf4dbe5ac84a8
 		//
 		//Generaracion y movimiento de gnomo 
 		gnomo.dibujargnomo(entorno);
