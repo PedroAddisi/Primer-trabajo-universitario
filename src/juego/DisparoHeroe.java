@@ -17,13 +17,13 @@ public DisparoHeroe(double x, double y, double alto,double largo, Color c) {
 	this.largo=largo;
 	this.c=c;
 	}
+public void DIbujarDisparo(Entorno entorno, Heroe heroe) {
+	entorno.dibujarRectangulo(heroe.x, heroe.y, 10, 10 , 0, Color.BLACK );
+}
 boolean colision(double x1, double y1, double l1, double a1, double x2, double y2, double l2, double a2) {
 	
 	return x1 - a1 / 2 <= x2 + a2 / 2  && x1 + a1 / 2 >= x2 - a2 / 2 && y1 - l1 / 2 <= y2 + l2 / 2 && y1 + l1 / 2 >= y2 - l2 / 2;
 	}
-public void GenerarDisparo(Entorno entorno, Heroe heroe) {
-	entorno.dibujarRectangulo(heroe.x, heroe.y, 10, 10 , 0, Color.BLACK );
-}
 public void fuegoDer() {
 	if(this.disparo== true) {
 		this.x+=1;

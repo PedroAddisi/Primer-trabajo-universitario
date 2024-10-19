@@ -20,19 +20,12 @@ public class Heroe {
 	double limIzq=this.x - this.largo / 2 ;
 	double limDer=this.x + this.largo / 2 ;
 	Boolean saltando= false;
-	
-	String[] porDondeToca = new String[5];
 	public Heroe(double x, double y, int largo, int alto, Color c) {
 		this.x=x;
 		this.y=y;
 		this.largo=largo;
 		this.alto=alto;	
 		this.c=c;
-		porDondeToca[0]= "Toca parte inferior de la isla";
-		porDondeToca[1]= "Toca parte superior de la isla";
-		porDondeToca[2]= "Toca parte izquierda de la isla";
-		porDondeToca[3]= "Toca parte derecha de la isla";
-		porDondeToca[4]= "NO TOCA";
 	}
 	public void dibujarheroe(Entorno entorno) {
 		entorno.dibujarRectangulo(x, y, alto, largo, 0, c);

@@ -4,6 +4,8 @@ import entorno.Board;
 import java.awt.Color;
 import java.awt.Image;
 
+import javax.sound.sampled.Clip;
+
 import entorno.Herramientas;
 import entorno.Entorno;
 import entorno.InterfaceJuego;
@@ -17,13 +19,15 @@ public class Juego extends InterfaceJuego
 	Isla[] islas = new Isla[15];
 	Heroe heroe;
 	Gnomo gnomo;
-	int tickCount = 0;// Pruebas borrar cuando termine
+	DisparoHeroe Disparo;
+	
 	int largo = 112;
 	int alto = 36;
 	char visionHeroe;
-	//
-	//
-	//Colision
+	Boolean PantalladeInicio;
+	Image pantalladeinicio;
+	Image imagenFondo;
+	Image casa;
 	//
 	//Generacion de islas
 	public Isla[] generadorIslas () {
@@ -57,9 +61,6 @@ public class Juego extends InterfaceJuego
 	    return islas;
 	    }
 	//
-	Image imagenFondo;
-	Image casa;
-
 	Juego() {
 
 		// Inicializa el objeto entorno
@@ -70,15 +71,18 @@ public class Juego extends InterfaceJuego
 		//
 		// Heroe
 		heroe = new Heroe(400, 475, 37, 12, Color.CYAN);
+		Disparo= new DisparoHeroe(heroe.x, heroe.y, 10, 10, Color.RED);
 		//
 		//Gnomo
 		gnomo = new Gnomo(350, 40, 37, 12, Color.green);
 		//
 		imagenFondo = Herramientas.cargarImagen("elfondo.jpg");
+		pantalladeinicio=Herramientas.cargarImagen("inicioo.jpg");
 		casa = Herramientas.cargarImagen("casa.png");
-		
 		// Inicia el juego!
+		
 		this.entorno.iniciar();
+		
 	}
 
 	/**
@@ -88,10 +92,18 @@ public class Juego extends InterfaceJuego
 	 * del TP para mayor detalle).
 	 */
 	public void tick() {
+		entorno.cambiarFont("Arial", 20, Color.WHITE);
+		entorno.dibujarImagen(pantalladeinicio, 400 , 300, 0);
+		entorno.escribirTexto("Click derecho para empezar", 300, 500);
+		entorno.cambiarFont("Arial",40, Color.BLACK);
+		entorno.escribirTexto("La carniceria de los Orcos", 180, 100);
+		if(entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {
+			this.PantalladeInicio=false;
+		}
+			if(this.PantalladeInicio== false) {
+		//GENERACION DE TEXTO Y PANTALLA
 		entorno.dibujarImagen(imagenFondo, 400, 300,0,1.8);
 		entorno.dibujarImagen(casa, 400,52,0,0.15);
-		tickCount += 1;// Pruebas borrar en final
-		// Generacion de Texto
 		entorno.cambiarFont("Arial", 32, Color.yellow);
 		entorno.escribirTexto("Tiempo : ", 0, 25);
 		entorno.escribirTexto("Salvados : ", 300, 25);
@@ -123,11 +135,13 @@ public class Juego extends InterfaceJuego
 				heroe.saltando=true;
 				heroe.SaltoDer(islas);
 			}
+			if(entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+				Disparo.DIbujarDisparo(entorno, heroe);
+			}
 	}
 				heroe.saltando=false;
 				heroe.colisionConIsla(islas);
 				heroe.gravedadHeroe(islas);
-				//System.out.println("Colision. Tick: " + tickCount + "!");// ESTA EN PRUEBA
 		//
 		//Generaracion y movimiento de gnomo 
 		gnomo.dibujargnomo(entorno);
@@ -138,9 +152,10 @@ public class Juego extends InterfaceJuego
 		System.out.println(heroe.tocaPorArriba(islas));
 		if (heroe.tocaPorArriba(islas)) {
 			System.out.println("TOCAAAAAAAAAAAA");
+		//
 		}
 	}
-
+	}
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Juego juego = new Juego();
