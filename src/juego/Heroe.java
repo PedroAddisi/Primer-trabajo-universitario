@@ -6,27 +6,20 @@ import java.awt.Point;
 import entorno.Entorno;
 
 public class Heroe {
-	double x;
-	double y;
-	int largo;
-	int alto;
-	Color c;
-	double angulo;
+	double x=400;
+	double y=475;
+	int largo=37;
+	int alto=12;
+	Color c=Color.CYAN;
 	boolean enisla=false;
 	double velocidad =1.5;
-	double gravedad=0.5;
+	double gravedad=1;
 	double limSup=this.y - this.alto / 2 ;
 	double limInf=this.y + this.alto / 2 ;
 	double limIzq=this.x - this.largo / 2 ;
 	double limDer=this.x + this.largo / 2 ;
 	Boolean saltando= false;
-	public Heroe(double x, double y, int largo, int alto, Color c) {
-		this.x=x;
-		this.y=y;
-		this.largo=largo;
-		this.alto=alto;	
-		this.c=c;
-	}
+
 	public void dibujarheroe(Entorno entorno) {
 		entorno.dibujarRectangulo(x, y, alto, largo, 0, c);
 }
@@ -44,14 +37,12 @@ public class Heroe {
 	}
 	public void moverAdelante() {
 		if(!this.saltando) {
-		this.x += Math.cos(this.angulo) * velocidad;
-		this.y += Math.sin(this.angulo) * velocidad;
+		this.x += 1 * velocidad;
 	}
 	}
 	public void moverAtras() {
 		if(!this.saltando) {
-			this.x += Math.cos(this.angulo) * (-velocidad);
-			this.y += Math.sin(this.angulo) * (-velocidad);
+			this.x += 1 * (-velocidad);
 	}
 	}
 	public void SaltoIzq(Isla [] islas) {

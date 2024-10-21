@@ -1,5 +1,5 @@
 package juego;
-
+import java.text.DecimalFormat;
 import entorno.Board;
 import java.awt.Color;
 import java.awt.Image;
@@ -20,7 +20,11 @@ public class Juego extends InterfaceJuego
 	Heroe heroe;
 	Gnomo gnomo;
 	DisparoHeroe Disparo;
-	
+	Gnomo[] gnomos;
+	Tortuga tortuga;
+	Double tiempo;
+    String tiempomos;
+    DecimalFormat decimalFormat =new DecimalFormat("#.#");
 	int largo = 112;
 	int alto = 36;
 	char visionHeroe;
@@ -28,8 +32,20 @@ public class Juego extends InterfaceJuego
 	Image pantalladeinicio;
 	Image imagenFondo;
 	Image casa;
+	int tick=0;
+	int salvados=0;
+	int muertos=0;
 	//
 	//Generacion de islas
+	public Gnomo[] generadorDeGnomos() {
+		Gnomo[]gnomos = new Gnomo[4];
+		for(int i=0; i<gnomos.length;i++) {
+			if (gnomos[i]==null) {
+				gnomos[i]=new Gnomo();
+			}
+		}
+		return gnomos;
+	}
 	public Isla[] generadorIslas () {
 	    Isla[] islas = new Isla[15];
 	    int ejeX= 96;
@@ -62,7 +78,8 @@ public class Juego extends InterfaceJuego
 	    }
 	//
 	Juego() {
-
+		//Tiempo
+        tiempo=120.0;
 		// Inicializa el objeto entorno
 		this.entorno = new Entorno(this, "Navecitas-Grupo Nr.", 800, 600);
 		//
@@ -70,11 +87,15 @@ public class Juego extends InterfaceJuego
 		islas=this.generadorIslas();
 		//
 		// Heroe
-		heroe = new Heroe(400, 475, 37, 12, Color.CYAN);
+		heroe = new Heroe();
 		Disparo= new DisparoHeroe(heroe.x, heroe.y, 10, 10, Color.RED);
 		//
 		//Gnomo
-		gnomo = new Gnomo(350, 40, 37, 12, Color.green);
+		gnomo = new Gnomo();
+		gnomos = this.generadorDeGnomos();
+		//
+		//Tortuga
+		tortuga = new Tortuga(350, 40, 37, 12, Color.red);
 		//
 		imagenFondo = Herramientas.cargarImagen("elfondo.jpg");
 		pantalladeinicio=Herramientas.cargarImagen("inicioo.jpg");
@@ -92,6 +113,7 @@ public class Juego extends InterfaceJuego
 	 * del TP para mayor detalle).
 	 */
 	public void tick() {
+		tick++;
 		entorno.cambiarFont("Arial", 20, Color.WHITE);
 		entorno.dibujarImagen(pantalladeinicio, 400 , 300, 0);
 		entorno.escribirTexto("Click derecho para empezar", 300, 500);
@@ -102,12 +124,14 @@ public class Juego extends InterfaceJuego
 		}
 			if(this.PantalladeInicio== false) {
 		//GENERACION DE TEXTO Y PANTALLA
+		tiempomos=decimalFormat.format(tiempo);
+		tiempo-=0.015;
 		entorno.dibujarImagen(imagenFondo, 400, 300,0,1.8);
 		entorno.dibujarImagen(casa, 400,52,0,0.15);
 		entorno.cambiarFont("Arial", 32, Color.yellow);
-		entorno.escribirTexto("Tiempo : ", 0, 25);
-		entorno.escribirTexto("Salvados : ", 300, 25);
-		entorno.escribirTexto("Muertos : ", 600, 25);
+		entorno.escribirTexto("Tiempo : " + tiempomos, 0, 25);
+		entorno.escribirTexto("Salvados : " + salvados, 300, 25);
+		entorno.escribirTexto("Muertos : " + muertos, 600, 25);
 		//
 		// GENERACION DE ISLA
 		for (Isla islas : islas) {
@@ -143,18 +167,33 @@ public class Juego extends InterfaceJuego
 				heroe.colisionConIsla(islas);
 				heroe.gravedadHeroe(islas);
 		//
-		//Generaracion y movimiento de gnomo 
-		gnomo.dibujargnomo(entorno);
-		gnomo.movimiento(islas);
-		gnomo.gravedadGnomos(islas);
-		gnomo.colisionConHeroe(heroe);
-		//
-		System.out.println(heroe.tocaPorArriba(islas));
-		if (heroe.tocaPorArriba(islas)) {
-			System.out.println("TOCAAAAAAAAAAAA");
-		//
+		//Generaracion y movimiento de gnomo
+		for (int i=0; i<gnomos.length;i++) {
+			if(gnomos[i]!=null) {
+				gnomos[i].colisionConHeroe(heroe);
+				if(gnomos[i].tocaConHeroe) {
+					gnomos[i]=null;
+					salvados++;
+				}
+				else if (gnomos[i].y >= 605) {
+					gnomos[i]=null;
+					muertos++;
+				}
+				else {
+					gnomos[i].dibujargnomo(entorno);
+					gnomos[i].movimiento(islas);
+					gnomos[i].caerGnomos(islas);
+				}
+			}
+			else {
+				gnomos[i] = new Gnomo();
+			}
 		}
-	}
+		//Movimiento tortuga
+		
+		tortuga.dibujarTortuga(entorno);
+		tortuga.movimiento(islas);
+		}
 	}
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {

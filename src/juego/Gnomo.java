@@ -12,23 +12,17 @@ import entorno.Entorno;
 import entorno.InterfaceJuego;
 public class Gnomo {
 	//Defino variable de irrepresentacion
-	double x;
-	double y;
-	int largo;
-	int alto;
-	Color c;
+	double x = 350;
+	double y = 40;
+	int largo=37;
+	int alto=12;
+	Color c=Color.green;
 	boolean tocaConIsla=false;
 	boolean tocaConHeroe=false;
 	int direccion;
-	double velocidad =1.1;
+	double velocidad =0.5;
+	boolean caer=false;
 
-	public Gnomo(int x,int y, int largo, int alto, Color c) {
-		this.x=x;
-		this.y=y;
-		this.largo=largo;
-		this.alto=alto;	
-		this.c=c;
-	}
 	public void dibujargnomo(Entorno entorno) {
 		entorno.dibujarRectangulo(x, y, alto, largo, 0, c);
 	}
@@ -62,17 +56,23 @@ public class Gnomo {
 		this.tocaConIsla=false;
 	}
 	public void avanzarGnomo() {
-		this.x+=this.velocidad;
+		if(!caer) {
+			this.x+=this.velocidad;
+		}
 	}
-	public void gravedadGnomos(Isla[] islas) {
+	public void caerGnomos(Isla[] islas) {
 		this.colisionConIsla(islas);
 		if (!this.tocaConIsla) {
 			this.y += 1;
+			caer=true;
+		}
+		else {
+			caer=false;
 		}
 	}
 	public void movimiento (Isla[] islas) {
 		if (!this.tocaConIsla) {
-			this.gravedadGnomos(islas);
+			this.caerGnomos(islas);
 			this.colisionConIsla(islas);
 			if(this.tocaConIsla) {
 				this.elegirDireccion();
