@@ -22,6 +22,7 @@ public class Juego extends InterfaceJuego
 	DisparoHeroe Disparo;
 	Gnomo[] gnomos;
 	Tortuga tortuga;
+	Tortuga []tortugas;
 	Double tiempo;
     String tiempomos;
     DecimalFormat decimalFormat =new DecimalFormat("#.#");
@@ -29,9 +30,11 @@ public class Juego extends InterfaceJuego
 	int alto = 36;
 	char visionHeroe;
 	Boolean PantalladeInicio;
+	Boolean PantallaGameOver;
 	Image pantalladeinicio;
 	Image imagenFondo;
 	Image casa;
+	Image gameover;
 	int tick= 0;
 	int salvados= 0;
 	int muertos= 0;
@@ -45,6 +48,15 @@ public class Juego extends InterfaceJuego
 			}
 		}
 		return gnomos;
+	}
+	public Tortuga[] generartortuga() {
+		Tortuga []tortugas = new Tortuga[8];
+		for(int i = 0; i < tortugas.length; i++) {
+			if (tortugas[i]== null) {
+				tortugas[i]= new Tortuga();
+			}
+		}
+		return tortugas;
 	}
 	public Isla[] generadorIslas () {
 	    Isla[] islas = new Isla[15];
@@ -88,31 +100,26 @@ public class Juego extends InterfaceJuego
 		//
 		// Heroe
 		heroe = new Heroe();
-		Disparo= new DisparoHeroe(heroe.x, heroe.y, 10, 10, Color.RED);
+		Disparo= new DisparoHeroe(heroe);
 		//
 		//Gnomo
 		gnomo = new Gnomo();
 		gnomos = this.generadorDeGnomos();
 		//
 		//Tortuga
-		tortuga = new Tortuga(350, 40, 37, 12, Color.red);
+		tortuga = new Tortuga();
+	//	tortugas= this.generartortuga();		
 		//
 		imagenFondo = Herramientas.cargarImagen("elfondo.jpg");
 		pantalladeinicio = Herramientas.cargarImagen("inicioo.jpg");
 		casa = Herramientas.cargarImagen("casa.png");
+		gameover=Herramientas .cargarImagen("gameover.png");
 	//	Herramientas.loop("Sountrack.wav");
 		// Inicia el juego!
-		
 		this.entorno.iniciar();
+		//
 		
 	}
-
-	/**
-	 * Durante el juego, el método tick() será ejecutado en cada instante y por lo
-	 * tanto es el método más importante de esta clase. Aquí se debe actualizar el
-	 * estado interno del juego para simular el paso del tiempo (ver el enunciado
-	 * del TP para mayor detalle).
-	 */
 	public void tick() {
 		tick++;
 		entorno.cambiarFont("Arial", 20, Color.WHITE);
@@ -154,19 +161,36 @@ public class Juego extends InterfaceJuego
 				if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
 					heroe.saltando = true;
 					heroe.SaltoIzq(islas);
-					Herramientas.play("Salto.wav");
+					//Herramientas.play("Salto.wav");
 				}
 		}
 		if(visionHeroe == entorno.TECLA_DERECHA) {
 			if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
 				heroe.saltando = true;
 				heroe.SaltoDer(islas);
-				Herramientas.play("Salto.wav");
 			}
-			if(entorno.sePresiono(entorno.TECLA_ESPACIO)) {
-				Disparo.DIbujarDisparo(entorno, heroe);
+				}
+		if(entorno.sePresiono(entorno.TECLA_ARRIBA)) {
+			Herramientas.play("Salto.wav");	
+		}
+		Disparo.desaparece(heroe);
+		if(entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+			Disparo.disparo=true;
+		}
+		if(Disparo.disparo == true) {
+			Disparo.DIbujarDisparo(entorno);
+			Disparo.mover();
+		}
+		if (!Disparo.disparo) {
+			if(this.visionHeroe == entorno.TECLA_DERECHA) {
+				Disparo.direcDer();
 			}
-	}
+			else if(this.visionHeroe == entorno.TECLA_IZQUIERDA) {
+				Disparo.direcIzq();
+			}
+			Disparo.x =heroe.x;
+			Disparo.y=heroe.y;
+		}
 				heroe.saltando = false;
 				heroe.colisionConIsla(islas);
 				heroe.gravedadHeroe(islas);
@@ -174,12 +198,13 @@ public class Juego extends InterfaceJuego
 		//Generaracion y movimiento de gnomo
 		for (int i= 0; i < gnomos.length;i++) {
 			if(gnomos[i] != null) {
+				gnomos[i].colisionConTortuga(tortuga);
 				gnomos[i].colisionConHeroe(heroe);
 				if(gnomos[i].tocaConHeroe) {
 					gnomos[i] = null;
 					salvados++;
 				}
-				else if (gnomos[i].y >= 605) {
+				else if (gnomos[i].y >= 605 || gnomos[i].tocaConTortuga == true ) {
 					gnomos[i] = null;
 					muertos++;
 				}
@@ -194,10 +219,22 @@ public class Juego extends InterfaceJuego
 			}
 		}
 		//Movimiento tortuga
-		
+//		for(Tortuga t: tortugas) {
+//			t.dibujarTortuga(entorno);
+//			t.movimiento(islas);
+//		}
 		tortuga.dibujarTortuga(entorno);
 		tortuga.movimiento(islas);
+		tortuga.colisionAdelante(islas);
+		tortuga.colisionConHeroe(heroe);
+		tortuga.colisionConDisparo(Disparo);
 		}
+			if(this.tiempo < 0 || this.muertos >= 5 || heroe.y >= 600 || tortuga.tocaConHeroe == true) {
+				this.PantallaGameOver = true;
+			}
+			if(this.PantallaGameOver == true) {
+				entorno.dibujarImagen(gameover, 400, 300, 0, 3.5);
+			}
 	}
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {

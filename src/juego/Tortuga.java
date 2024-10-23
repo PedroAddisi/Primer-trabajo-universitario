@@ -8,25 +8,30 @@ import entorno.Entorno;
 import entorno.Herramientas;
 
 public class Tortuga {
-	double x = 350;
-	double y = 40;
+	double x;
+	double y= 10;
 	int largo = 37;
 	int alto = 12;
-	Color c;
+	Color c=Color.GREEN;
 	boolean tocaConIsla = false;
 	boolean tocaConHeroe = false;
 	boolean tocaConGnomo = false;
 	boolean adelanteNoHayIsla = true;
+	boolean tocaConDisparo = false; 
 	int direccion;
 	double velocidad = 0.3;
 	Image img= Herramientas.cargarImagen("OrcoFinal.gif");
 	
-	public Tortuga(int x,int y, int largo, int alto, Color c) {
-		this.x = x;
-		this.y = y;
-		this.largo = largo;
-		this.alto = alto;	
-		this.c = c;
+	public Tortuga() {
+		Random random = new Random();
+		boolean azar = random.nextBoolean();
+		if(azar) {
+			this.x=Math.random()*(305)+40;
+		}
+		else {
+			this.x=Math.random()*(305)+456;
+		}
+		
 	}
 	public void dibujarTortuga(Entorno entorno) {
 		//entorno.dibujarRectangulo(x, y, alto, largo, 0, c);
@@ -55,7 +60,7 @@ public class Tortuga {
 		}
 	}
 	
-	public void elegirDireccion() {
+	public void elegirDireccionAlazar() {
 		Random derechaOIzquierda = new Random();
 		boolean direc = derechaOIzquierda.nextBoolean(); //Genero un booleano random
 		if (direc) { //Si es verdadero va para la derecha
@@ -80,7 +85,7 @@ public class Tortuga {
 	}
 	
 	public void avanzar() {
-		this.x += velocidad;
+		this.x += this.velocidad;
 	}
 	
 	public void colisionAdelante(Isla islas[]) {
@@ -94,19 +99,35 @@ public class Tortuga {
 			}
 		}
 	}
-	
+	public void cambiarDireccion() {
+		this.direccion=this.direccion*-1;
+		this.velocidad=this.velocidad*this.direccion;
+	}
 	public void movimiento(Isla islas[]) {
 		this.colisionConIsla(islas);
 		this.colisionAdelante(islas);
 		if(!tocaConIsla) {
 			y += 1;
+			this.elegirDireccionAlazar();
 		}
 		else if(adelanteNoHayIsla) {
-			this.elegirDireccion();
+			this.cambiarDireccion();
 			this.avanzar();
 		}
 		else {
 			this.avanzar();
+		}
+	}
+	public void colisionConDisparo(DisparoHeroe t) {
+		if(colision(t.x, t.y, t.largo, t.alto, this.x, this.y, this.largo, this.alto)) {
+			this.tocaConDisparo=true;
+		}
+		else {
+			this.tocaConDisparo=false;
+		}
+		if(this.tocaConDisparo == true) {
+			t.disparo=false;
+			this.x=400;//aca en vez de 400 hacerla null y joya
 		}
 	}
 }

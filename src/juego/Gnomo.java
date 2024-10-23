@@ -19,6 +19,7 @@ public class Gnomo {
 	Color c = Color.green;
 	boolean tocaConIsla = false;
 	boolean tocaConHeroe = false;
+	boolean tocaConTortuga = true;
 	int direccion;
 	double velocidad = 0.5;
 	boolean caer = false;
@@ -47,6 +48,14 @@ public class Gnomo {
 			else{
 				this.tocaConHeroe = false;
 			}
+	}
+	public void colisionConTortuga(Tortuga t) {
+		if(colisionPrueba(t.x, t.y, t.largo, t.alto, this.x, this.y, this.largo, this.alto)) {
+			this.tocaConTortuga=true;
+		}
+		else {
+			this.tocaConTortuga=false;
+		}
 	}
 	public void colisionConIsla(Isla islas[]) {
 		for (Isla i : islas) {
