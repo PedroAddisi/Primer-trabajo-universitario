@@ -12,7 +12,6 @@ public class Tortuga {
 	double y= 10;
 	int largo = 37;
 	int alto = 12;
-	Color c=Color.GREEN;
 	boolean tocaConIsla = false;
 	boolean tocaConHeroe = false;
 	boolean tocaConGnomo = false;
@@ -20,21 +19,20 @@ public class Tortuga {
 	boolean tocaConDisparo = false; 
 	int direccion;
 	double velocidad = 0.3;
-	Image img= Herramientas.cargarImagen("OrcoFinal.gif");
+	Image img = Herramientas.cargarImagen("OrcoFinal.gif");
 	
 	public Tortuga() {
 		Random random = new Random();
 		boolean azar = random.nextBoolean();
 		if(azar) {
-			this.x=Math.random()*(305)+40;
+			this.x = Math.random()*(305)+40;
 		}
 		else {
-			this.x=Math.random()*(305)+456;
+			this.x = Math.random()*(305)+456;
 		}
 		
 	}
 	public void dibujarTortuga(Entorno entorno) {
-		//entorno.dibujarRectangulo(x, y, alto, largo, 0, c);
 		entorno.dibujarImagen(img, this.x, this.y, 0, 0.18);
 	}
 	boolean colision(double x1, double y1, double a1, double l1, double x2, double y2, double a2, double l2) {
@@ -43,7 +41,7 @@ public class Tortuga {
 	}
 	
 	public void colisionConHeroe(Heroe h) {
-		if(colision(h.x, h.y ,h.largo, h.alto , this.x, this.y, this.largo, this.alto)) {
+		if(colision(h.x, h.y , h.largo, h.alto , this.x, this.y, this.largo, this.alto)) {
 			this.tocaConHeroe = true;
 		}
 		else{
@@ -52,7 +50,7 @@ public class Tortuga {
 	}
 	
 	public void colisionConGnomo(Heroe h) {
-		if(colision(h.x, h.y ,h.largo, h.alto , this.x, this.y, this.largo, this.alto)) {
+		if(colision(h.x, h.y , h.largo, h.alto , this.x, this.y, this.largo, this.alto)) {
 			this.tocaConGnomo = true;
 		}
 		else{
@@ -100,8 +98,8 @@ public class Tortuga {
 		}
 	}
 	public void cambiarDireccion() {
-		this.direccion=this.direccion*-1;
-		this.velocidad=this.velocidad*this.direccion;
+		this.direccion = this.direccion*-1;
+		this.velocidad = this.velocidad*this.direccion;
 	}
 	public void movimiento(Isla islas[]) {
 		this.colisionConIsla(islas);
@@ -127,7 +125,7 @@ public class Tortuga {
 		}
 		if(this.tocaConDisparo == true) {
 			t.disparo=false;
-			this.x=400;//aca en vez de 400 hacerla null y joya
+			this.x = 400;//aca en vez de 400 hacerla null y joya
 		}
 	}
 }

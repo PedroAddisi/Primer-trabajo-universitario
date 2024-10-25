@@ -11,23 +11,20 @@ import entorno.Herramientas;
 import entorno.Entorno;
 import entorno.InterfaceJuego;
 public class Gnomo {
-	//Defino variable de irrepresentacion
 	double x = 350;
 	double y = 40;
 	int largo = 37;
 	int alto = 12;
-	Color c = Color.green;
 	boolean tocaConIsla = false;
 	boolean tocaConHeroe = false;
 	boolean tocaConTortuga = true;
 	int direccion;
 	double velocidad = 0.5;
 	boolean caer = false;
-	Image img=Herramientas.cargarImagen("Enano final.gif");
+	Image img = Herramientas.cargarImagen("Enano final.gif");
 
 	public void dibujargnomo(Entorno entorno) {
-		//entorno.dibujarRectangulo(x, y, alto, largo, 0, c);
-		entorno.dibujarImagen(img, this.x, this.y, 0,0.2);
+		entorno.dibujarImagen(img, this.x, this.y, 0, 0.2);
 	}
 	public void elegirDireccion() {
 		Random derechaOIzquierda = new Random();
@@ -42,7 +39,7 @@ public class Gnomo {
 		this.velocidad = this.velocidad*this.direccion;
 	}
 	public void colisionConHeroe(Heroe h) {
-			if(colisionPrueba(h.x, h.y ,h.largo, h.alto , this.x, this.y, this.largo, this.alto)) {
+			if(colisionPrueba(h.x, h.y , h.largo, h.alto , this.x, this.y, this.largo, this.alto)) {
 				this.tocaConHeroe = true;
 			}
 			else{
@@ -51,10 +48,10 @@ public class Gnomo {
 	}
 	public void colisionConTortuga(Tortuga t) {
 		if(colisionPrueba(t.x, t.y, t.largo, t.alto, this.x, this.y, this.largo, this.alto)) {
-			this.tocaConTortuga=true;
+			this.tocaConTortuga = true;
 		}
 		else {
-			this.tocaConTortuga=false;
+			this.tocaConTortuga = false;
 		}
 	}
 	public void colisionConIsla(Isla islas[]) {

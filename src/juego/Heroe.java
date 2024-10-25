@@ -12,17 +12,15 @@ public class Heroe {
 	double y = 475;
 	int largo = 37;
 	int alto = 12;
-	Color c = Color.CYAN;
 	boolean enisla = false;
 	double velocidad = 1.5;
 	double gravedad = 1;
 	Boolean saltando = false;
-	Image img=Herramientas.cargarImagen("Elheroe.gif");
+	Image img = Herramientas.cargarImagen("Elheroe.gif");
 
 	public void dibujarheroe(Entorno entorno) {
-		//entorno.dibujarRectangulo(x, y, alto, largo, 0, c);
-		entorno.dibujarImagen(img, this.x, this.y, 0,0.15);
-}
+		entorno.dibujarImagen(img, this.x, this.y,0,0.15);
+		}
 	boolean colision(double x1, double y1, double a1, double l1, double x2, double y2, double a2, double l2) {
 		
 		return x1 - l1 / 2 <= x2 + l2 / 2  && x1 + l1 / 2 >= x2 - l2 / 2 && y1 - a1 / 2 <= y2 + a2 / 2 && y1 + a1 / 2 >= y2 - a2 / 2;
