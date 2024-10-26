@@ -17,7 +17,7 @@ public class Gnomo {
 	int alto = 12;
 	boolean tocaConIsla = false;
 	boolean tocaConHeroe = false;
-	boolean tocaConTortuga = true;
+	boolean tocaConTortuga = false;
 	int direccion;
 	double velocidad = 0.5;
 	boolean caer = false;

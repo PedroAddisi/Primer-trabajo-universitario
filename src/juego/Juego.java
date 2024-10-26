@@ -39,17 +39,15 @@ public class Juego extends InterfaceJuego
 	int guardoIndiceTortuga=-1;
 	int guardoIndiceGnomo=-1;
 	//Generacion de islas
-	public void generadorDeGnomos(Gnomo[] gnomos) {
-		for(int i = 0; i < gnomos.length; i++) {
-			if (gnomos[i] == null) {
-				guardoIndiceGnomo=i;
-			}
-		}
-		if(guardoIndiceGnomo!=-1) {
-			tortugas[guardoIndiceGnomo]= new Tortuga();
-			guardoIndiceGnomo=-1;	
-		}
-	}
+	public Gnomo[] generadorDeGnomos() {
+        Gnomo[]gnomos = new Gnomo[4];
+        for(int i = 0; i < gnomos.length; i++) {
+            if (gnomos[i] == null) {
+                gnomos[i] = new Gnomo();
+            }
+        }
+        return gnomos;
+    }
 	public void generartortuga(Tortuga tortugas[]) {
 		for(int i = 0; i < tortugas.length; i++) {
 			if (tortugas[i] == null) {
@@ -185,7 +183,7 @@ public class Juego extends InterfaceJuego
 			}
 				}
 		if(entorno.sePresiono(entorno.TECLA_ARRIBA)) {
-			Herramientas.play("Salto.wav");	
+			//Herramientas.play("Salto.wav");	
 		}
 		//DISPARO DEL HEROE
 		Disparo.desaparece(heroe);
@@ -214,14 +212,22 @@ public class Juego extends InterfaceJuego
 		//Generaracion y movimiento de gnomo
 		for (int i = 0; i < gnomos.length;i++) {
 			if(gnomos[i]!=null) {
-				gnomos[i].colisionConTortuga(tortuga);
+				for(int t=0; t<tortugas.length;t++) {
+					if(tortugas[t]!=null) {
+						gnomos[i].colisionConTortuga(tortugas[t]);
+						if(gnomos[i].tocaConTortuga) {
+							gnomos[i] = null;
+							muertos++;
+						}
+					}
+				}
 				gnomos[i].colisionConHeroe(heroe);
 				nave.colisionConGnomo(gnomos[i]);
-				if(gnomos[i].tocaConHeroe || nave.tocaConGnomo == true) {
+				if(gnomos[i].tocaConHeroe && gnomos[i].y>200 || nave.tocaConGnomo == true) {
 					gnomos[i] = null;
 					salvados++;
 				}
-				else if (gnomos[i].y >= 605 || gnomos[i].tocaConTortuga == true ) {
+				else if (gnomos[i].y >= 605) {
 					gnomos[i] = null;
 					muertos++;
 				}
@@ -250,6 +256,7 @@ public class Juego extends InterfaceJuego
 				tortugas[i].movimiento(islas);
 				tortugas[i].colisionConHeroe(heroe);
 				tortugas[i].colisionConDisparo(Disparo);
+				}
 			}
 		}
 //		tortuga.colisionAdelante();
@@ -264,7 +271,6 @@ public class Juego extends InterfaceJuego
 		if(this.PantallaGameOver == true) {
 			entorno.dibujarImagen(gameover, 400, 300, 0, 3.5);
 		}
-	}
 }
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
