@@ -15,9 +15,10 @@ public class Tortuga {
 	boolean tocaConIsla = false;
 	boolean tocaConHeroe = false;
 	boolean tocaConGnomo = false;
-	boolean adelanteNoHayIsla = true;
+	boolean adelanteNoHayIsla = false;
 	boolean tocaConDisparo = false; 
-	int direccion;
+	Isla islaToca;
+	int direccion=-1;
 	double velocidad = 0.3;
 	Image img = Herramientas.cargarImagen("OrcoFinal.gif");
 	
@@ -56,26 +57,12 @@ public class Tortuga {
 		else{
 			this.tocaConGnomo = false;
 		}
-	}
-	
-	public void elegirDireccionAlazar() {
-		Random derechaOIzquierda = new Random();
-		boolean direc = derechaOIzquierda.nextBoolean(); //Genero un booleano random
-		if (direc) { //Si es verdadero va para la derecha
-			this.direccion = 1;
-		}
-		else {
-			this.direccion = -1;
-		}
-		
-		//La velocidad se multiplicara por este numero para q camine hacia ese lado
-		this.velocidad = this.velocidad*this.direccion;
-	}
-	
+	}	
 	public void colisionConIsla(Isla islas[]) {
 		for (Isla i : islas) {
 			if(colision(i.x, i.y ,i.largo, i.alto , this.x, this.y, this.largo, this.alto)) {
 				this.tocaConIsla = true;
+				islaToca=i;
 				return;
 			}
 		}
@@ -83,37 +70,42 @@ public class Tortuga {
 	}
 	
 	public void avanzar() {
-		this.x += this.velocidad;
+		this.x += this.velocidad*this.direccion;
 	}
 	
-	public void colisionAdelante(Isla islas[]) {
-		for (Isla i : islas) {
-			if(colision(i.x, i.y ,i.largo, i.alto , (this.x + this.velocidad) , this.y, this.largo, this.alto)) {
-				this.adelanteNoHayIsla = false;
+//	public void colisionAdelante(Isla islas[]) {
+//		for (Isla i : islas) {
+//			if(colision(i.x, i.y ,i.largo, i.alto , (this.x + this.velocidad) , this.y, this.largo, this.alto)) {
+//				this.adelanteNoHayIsla = true;
+//				return;
+//			}
+//			else {
+//				this.adelanteNoHayIsla = false;
+//			}
+//		}
+	public void colisionAdelante() {
+		if(islaToca !=null) {
+			if (!colision(this.islaToca.x, this.islaToca.y,this.islaToca.largo, this.islaToca.alto, this.x+1*this.direccion, this.y, this.largo,this.alto)) {
+				this.adelanteNoHayIsla = true;
 				return;
 			}
 			else {
-				this.adelanteNoHayIsla = true;
+				this.adelanteNoHayIsla = false;
 			}
 		}
 	}
 	public void cambiarDireccion() {
 		this.direccion = this.direccion*-1;
-		this.velocidad = this.velocidad*this.direccion;
 	}
 	public void movimiento(Isla islas[]) {
 		this.colisionConIsla(islas);
-		this.colisionAdelante(islas);
 		if(!tocaConIsla) {
 			y += 1;
-			this.elegirDireccionAlazar();
+		}else {
+			this.avanzar();
 		}
-		else if(adelanteNoHayIsla) {
+		if(adelanteNoHayIsla) {
 			this.cambiarDireccion();
-			this.avanzar();
-		}
-		else {
-			this.avanzar();
 		}
 	}
 	public void colisionConDisparo(DisparoHeroe t) {

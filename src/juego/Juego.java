@@ -17,10 +17,10 @@ public class Juego extends InterfaceJuego
 	Heroe heroe;
 	Nave nave;
 	Gnomo gnomo;
-	DisparoHeroe Disparo;
-	Gnomo[] gnomos;
 	Tortuga tortuga;
-	Tortuga []tortugas;
+	DisparoHeroe Disparo;
+	Gnomo[] gnomos = new Gnomo[4];
+	Tortuga []tortugas = new Tortuga[8];
 	Double tiempo;
     String tiempomos;
     DecimalFormat decimalFormat =new DecimalFormat("#.#");
@@ -36,24 +36,31 @@ public class Juego extends InterfaceJuego
 	int tick = 0;
 	int salvados = 0;
 	int muertos = 0;
+	int guardoIndiceTortuga=-1;
+	int guardoIndiceGnomo=-1;
 	//Generacion de islas
-	public Gnomo[] generadorDeGnomos() {
-		Gnomo[]gnomos = new Gnomo[4];
+	public void generadorDeGnomos(Gnomo[] gnomos) {
 		for(int i = 0; i < gnomos.length; i++) {
 			if (gnomos[i] == null) {
-				gnomos[i] = new Gnomo();
+				guardoIndiceGnomo=i;
 			}
 		}
-		return gnomos;
+		if(guardoIndiceGnomo!=-1) {
+			tortugas[guardoIndiceGnomo]= new Tortuga();
+			guardoIndiceGnomo=-1;	
+		}
 	}
-	public Tortuga[] generartortuga() {
-		Tortuga []tortugas = new Tortuga[8];
+	public void generartortuga(Tortuga tortugas[]) {
 		for(int i = 0; i < tortugas.length; i++) {
 			if (tortugas[i] == null) {
-				tortugas[i] = new Tortuga();
+				guardoIndiceTortuga=i;
 			}
 		}
-		return tortugas;
+		if(guardoIndiceTortuga!=-1) {
+			tortugas[guardoIndiceTortuga]= new Tortuga();
+			guardoIndiceTortuga=-1;	
+		}
+
 	}
 	public Isla[] generadorIslas () {
 	    Isla[] islas = new Isla[15];
@@ -102,12 +109,8 @@ public class Juego extends InterfaceJuego
 		//
 		//Gnomo
 		gnomo = new Gnomo();
-		gnomos = this.generadorDeGnomos();
 		//
-		//Tortuga
-		tortuga = new Tortuga();
-	//	tortugas = this.generartortuga();		
-		//
+		tortuga= new Tortuga();
 		imagenFondo = Herramientas.cargarImagen("elfondo.jpg");
 		pantalladeinicio = Herramientas.cargarImagen("inicioo.jpg");
 		casa = Herramientas.cargarImagen("casa.png");
@@ -210,7 +213,7 @@ public class Juego extends InterfaceJuego
 		//
 		//Generaracion y movimiento de gnomo
 		for (int i = 0; i < gnomos.length;i++) {
-			if(gnomos[i] != null) {
+			if(gnomos[i]!=null) {
 				gnomos[i].colisionConTortuga(tortuga);
 				gnomos[i].colisionConHeroe(heroe);
 				nave.colisionConGnomo(gnomos[i]);
@@ -227,9 +230,8 @@ public class Juego extends InterfaceJuego
 					gnomos[i].movimiento(islas);
 					gnomos[i].caerGnomos(islas);
 				}
-			}
-			else {
-				gnomos[i] = new Gnomo();
+			}else {
+			gnomos[i] = new Gnomo();
 			}
 		}
 		//
@@ -238,19 +240,32 @@ public class Juego extends InterfaceJuego
 //			t.dibujarTortuga(entorno);
 //			t.movimiento(islas);
 //		}
-		tortuga.dibujarTortuga(entorno);
-		tortuga.movimiento(islas);
-		tortuga.colisionAdelante(islas);
-		tortuga.colisionConHeroe(heroe);
-		tortuga.colisionConDisparo(Disparo);
+		if (tick%350 ==0) {
+			this.generartortuga(tortugas);
+			}
+		for(int i=0; i<tortugas.length;i++) {
+			if (tortugas[i]!=null) {
+				tortugas[i].colisionAdelante();
+				tortugas[i].dibujarTortuga(entorno);
+				tortugas[i].movimiento(islas);
+				tortugas[i].colisionConHeroe(heroe);
+				tortugas[i].colisionConDisparo(Disparo);
+			}
 		}
-			if(this.tiempo < 0 || this.muertos >= 5 || heroe.y >= 600 || tortuga.tocaConHeroe == true) {
-				this.PantallaGameOver = true;
-			}
-			if(this.PantallaGameOver == true) {
-				entorno.dibujarImagen(gameover, 400, 300, 0, 3.5);
-			}
+//		tortuga.colisionAdelante();
+//		tortuga.dibujarTortuga(entorno);
+//		tortuga.movimiento(islas);
+//		tortuga.colisionConHeroe(heroe);
+//		tortuga.colisionConDisparo(Disparo);
+
+		if(this.tiempo < 0 || this.muertos >= 5 || heroe.y >= 600) {
+			this.PantallaGameOver = true;
+		}
+		if(this.PantallaGameOver == true) {
+			entorno.dibujarImagen(gameover, 400, 300, 0, 3.5);
+		}
 	}
+}
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Juego juego = new Juego();
