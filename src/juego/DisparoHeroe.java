@@ -5,16 +5,16 @@ import java.awt.Image;
 import entorno.Entorno;
 import entorno.Herramientas;
 public class DisparoHeroe {
-double x;
-double y;
-double alto = 10;
-double largo = 10;
-boolean disparo = false;
-double velocidad =3.5;
+private double x;
+private double y;
+private double alto = 10;
+private double largo = 10;
+private boolean disparo = false;
+private double velocidad =3.5;
 Image img = Herramientas.cargarImagen("Bola de fuego.gif");
 public DisparoHeroe(Heroe h) {
-	this.x = h.x;
-	this.y = h.y;
+	this.x = h.getX();
+	this.y = h.getY();
 	}
 public void DIbujarDisparo(Entorno entorno) {
 	entorno.dibujarImagen(img, x, y, 0, 0.5);
@@ -37,4 +37,47 @@ public void desaparece(Heroe heroe) {
 		this.disparo = false;
 		}
 	}
+public double getX() {
+	return x;
+}
+public void setX(double x) {
+	this.x = x;
+}
+public double getY() {
+	return y;
+}
+public void setY(double y) {
+	this.y = y;
+}
+public double getAlto() {
+	return alto;
+}
+public void setAlto(double alto) {
+	this.alto = alto;
+}
+public double getLargo() {
+	return largo;
+}
+public void setLargo(double largo) {
+	this.largo = largo;
+}
+public boolean isDisparo() {
+	return disparo;
+}
+public void setDisparo(boolean disparo) {
+	this.disparo = disparo;
+}
+public double getVelocidad() {
+	return velocidad;
+}
+public void setVelocidad(double velocidad) {
+	this.velocidad = velocidad;
+}
+public Image getImg() {
+	return img;
+}
+public void setImg(Image img) {
+	this.img = img;
+}
+
 }

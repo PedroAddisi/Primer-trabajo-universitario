@@ -1,7 +1,6 @@
 package juego;
 import java.text.DecimalFormat;
 import java.util.Random;
-import entorno.Board;
 import java.awt.Color;
 import java.awt.Image;
 import entorno.Herramientas;
@@ -76,12 +75,12 @@ public class Juego extends InterfaceJuego
 	                ejeY -= 106;
 	            }
 	            else if (indice == 0) {
-	                islas[0] = new Isla (ejeX, ejeY, largo, alto, Color.red);
+	                islas[0] = new Isla (ejeX, ejeY, largo, alto);
 	            }
 	            else if (indice != 0) {
 	                ejeX += 152;
 	            }
-	        islas[indice]= new Isla(ejeX, ejeY, largo, alto, Color.red);
+	        islas[indice]= new Isla(ejeX, ejeY, largo, alto);
 	        indice++;
 	        numDeIslaEnFila++;
 	        }
@@ -151,17 +150,17 @@ public class Juego extends InterfaceJuego
 		//
 		//Generacion y nave
 		nave.dibujarnave(entorno);
-		nave.x = entorno.mouseX();
+		nave.setX(entorno.mouseX());
 		nave.colisionConHeroe(heroe);
-		if(nave.tocaConHeroe == true) {
-			heroe.x = 400;
-			heroe.y = 450;
+		if(nave.isTocaConHeroe() == true) {
+			heroe.setX(400);
+			heroe.setY(450);
 		}
 		//
 		// GENERACION Y MOVIMIENTO DEL HEROE
 		heroe.dibujarheroe(entorno);
 		nave.dibujarnave(entorno);
-		nave.x = entorno.mouseX();
+		nave.setX(entorno.mouseX());
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			heroe.moverAdelante();
 			visionHeroe = entorno.TECLA_DERECHA; 
@@ -173,14 +172,14 @@ public class Juego extends InterfaceJuego
 		}
 		if(visionHeroe == entorno.TECLA_IZQUIERDA) {
 				if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
-					heroe.saltando = true;
+					heroe.setSaltando(true);
 					heroe.SaltoIzq(islas);
 					//Herramientas.play("Salto.wav");
 				}
 		}
 		if(visionHeroe == entorno.TECLA_DERECHA) {
 			if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
-				heroe.saltando = true;
+				heroe.setSaltando(true);
 				heroe.SaltoDer(islas);
 			}
 				}
@@ -190,24 +189,24 @@ public class Juego extends InterfaceJuego
 		//DISPARO DEL HEROE
 		Disparo.desaparece(heroe);
 		if(entorno.sePresiono(entorno.TECLA_ESPACIO)) {
-			Disparo.disparo = true;
+			Disparo.setDisparo(true);
 		}
-		if(Disparo.disparo == true) {
+		if(Disparo.isDisparo() == true) {
 			Disparo.DIbujarDisparo(entorno);
 			Disparo.mover();
 		}
-		if (!Disparo.disparo) {
+		if (!Disparo.isDisparo()) {
 			if(this.visionHeroe == entorno.TECLA_DERECHA) {
 				Disparo.direcDer();
 			}
 			else if(this.visionHeroe == entorno.TECLA_IZQUIERDA) {
 				Disparo.direcIzq();
 			}
-			Disparo.x =heroe.x;
-			Disparo.y=heroe.y;
+			Disparo.setX(heroe.getX());
+			Disparo.setY(heroe.getY());
 		}
 		//
-				heroe.saltando = false;
+				heroe.setSaltando(false);
 				heroe.colisionConIsla(islas);
 				heroe.gravedadHeroe(islas);
 		//
@@ -217,7 +216,7 @@ public class Juego extends InterfaceJuego
 				for(int t=0; t<tortugas.length;t++) {
 					if(tortugas[t]!=null) {
 						gnomos[i].colisionConTortuga(tortugas[t]);
-						if(gnomos[i].tocaConTortuga) {
+						if(gnomos[i].isTocaConTortuga()) {
 							gnomos[i] = null;
 							muertos++;
 						}
@@ -225,11 +224,11 @@ public class Juego extends InterfaceJuego
 				}
 				gnomos[i].colisionConHeroe(heroe);
 				nave.colisionConGnomo(gnomos[i]);
-				if(gnomos[i].tocaConHeroe && gnomos[i].y>200 || nave.tocaConGnomo == true) {
+				if(gnomos[i].isTocaConHeroe() && gnomos[i].getY()>200 || nave.isTocaConGnomo() == true) {
 					gnomos[i] = null;
 					salvados++;
 				}
-				else if (gnomos[i].y >= 605) {
+				else if (gnomos[i].getY() >= 605) {
 					gnomos[i] = null;
 					muertos++;
 				}
@@ -258,14 +257,14 @@ public class Juego extends InterfaceJuego
 				tortugas[i].movimiento(islas);
 				tortugas[i].colisionConHeroe(heroe);
 				tortugas[i].colisionConDisparo(Disparo);
-				if (tortugas[i].tocaConDisparo==true) {
+				if (tortugas[i].isTocaConDisparo()==true) {
 					tortugas[i]=null;
 					}
 				}
 			}
 		}
 
-		if(this.tiempo < 0 || this.muertos >= 5 || heroe.y >= 600) {
+		if(this.tiempo < 0 || this.muertos >= 5 || heroe.getY() >= 600) {
 			this.PantallaGameOver = true;
 		}
 		if(this.PantallaGameOver == true) {

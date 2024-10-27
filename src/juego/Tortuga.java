@@ -1,6 +1,6 @@
 package juego;
 
-import java.awt.Color;
+
 import java.awt.Image;
 import java.util.Random;
 
@@ -8,34 +8,33 @@ import entorno.Entorno;
 import entorno.Herramientas;
 
 public class Tortuga {
-	double x;
-	double y= 10;
-	int largo = 37;
-	int alto = 12;
-	boolean tocaConIsla = false;
-	boolean tocaConHeroe = false;
-	boolean tocaConGnomo = false;
-	boolean adelanteNoHayIsla = false;
-	boolean tocaConDisparo = false; 
-	Isla islaToca;
-	int direccion=-1;
-	double velocidad = 0.3;
-	Image img = Herramientas.cargarImagen("OrcoFinal.gif");
-	int islasTortugas[]={0,4,9,11};
-	Random random= new Random();
-	boolean IzqODer;
-	int xTortuga;
-	int azar;
+	private double x;
+	private double y= 10;
+	private int largo = 37;
+	private int alto = 12;
+	private boolean tocaConIsla = false;
+	private boolean tocaConHeroe = false;
+	private boolean tocaConGnomo = false;
+	private boolean adelanteNoHayIsla = false;
+	private boolean tocaConDisparo = false; 
+	private Isla islaToca;
+	private int direccion=-1;
+	private double velocidad = 0.3;
+	private Image img = Herramientas.cargarImagen("OrcoFinal.gif");
+	private int islasTortugas[]={0,4,9,11};
+	private Random random= new Random();
+	private boolean IzqODer;
+	private int azar;
 	
 	public Tortuga(Isla islas[], Tortuga tortugas[]) {
 		azar=(int)(Math.random()*4);
 		IzqODer = random.nextBoolean();
 		this.elegirAzar(tortugas);	
 		if (IzqODer == false) {
-			this.x=islas[islasTortugas[azar]].x-islas[islasTortugas[azar]].alto/4;
+			this.x=islas[islasTortugas[azar]].getX()-islas[islasTortugas[azar]].getAlto()/4;
 		}
 		if (IzqODer == true) {
-			this.x=islas[islasTortugas[azar]].x+islas[islasTortugas[azar]].alto/4;
+			this.x=islas[islasTortugas[azar]].getX()+islas[islasTortugas[azar]].getAlto()/4;
 		}
 		System.out.println(azar);
 		System.out.println(IzqODer);
@@ -61,7 +60,7 @@ public class Tortuga {
 	}
 	
 	public void colisionConHeroe(Heroe h) {
-		if(colision(h.x, h.y , h.largo, h.alto , this.x, this.y, this.largo, this.alto)) {
+		if(colision(h.getX(), h.getY() , h.getLargo(), h.getAlto() , this.x, this.y, this.largo, this.alto)) {
 			this.tocaConHeroe = true;
 		}
 		else{
@@ -70,7 +69,7 @@ public class Tortuga {
 	}
 	
 	public void colisionConGnomo(Heroe h) {
-		if(colision(h.x, h.y , h.largo, h.alto , this.x, this.y, this.largo, this.alto)) {
+		if(colision(h.getX(), h.getY() , h.getLargo(), h.getAlto() , this.x, this.y, this.largo, this.alto)) {
 			this.tocaConGnomo = true;
 		}
 		else{
@@ -79,7 +78,7 @@ public class Tortuga {
 	}	
 	public void colisionConIsla(Isla islas[]) {
 		for (Isla i : islas) {
-			if(colision(i.x, i.y ,i.largo, i.alto , this.x, this.y, this.largo, this.alto)) {
+			if(colision(i.getX(), i.getY() ,i.getLargo(), i.getAlto() , this.x, this.y, this.largo, this.alto)) {
 				this.tocaConIsla = true;
 				islaToca=i;
 				return;
@@ -104,7 +103,7 @@ public class Tortuga {
 //		}
 	public void colisionAdelante() {
 		if(islaToca !=null) {
-			if (!colision(this.islaToca.x, this.islaToca.y,this.islaToca.largo, this.islaToca.alto, this.x+1*this.direccion, this.y, this.largo,this.alto)) {
+			if (!colision(this.islaToca.getX(), this.islaToca.getY(),this.islaToca.getLargo(), this.islaToca.getAlto(), this.x+1*this.direccion, this.y, this.largo,this.alto)) {
 				this.adelanteNoHayIsla = true;
 				return;
 			}
@@ -128,12 +127,114 @@ public class Tortuga {
 		}
 	}
 	public void colisionConDisparo(DisparoHeroe t) {
-		if(colision(t.x, t.y, t.largo, t.alto, this.x, this.y, this.largo, this.alto)) {
+		if(colision(t.getX(), t.getY(), t.getLargo(), t.getAlto(), this.x, this.y, this.largo, this.alto)) {
 			this.tocaConDisparo=true;
 		}
 		else {
 			this.tocaConDisparo=false;
 		}
+	}
+	public double getX() {
+		return x;
+	}
+	public void setX(double x) {
+		this.x = x;
+	}
+	public double getY() {
+		return y;
+	}
+	public void setY(double y) {
+		this.y = y;
+	}
+	public int getLargo() {
+		return largo;
+	}
+	public void setLargo(int largo) {
+		this.largo = largo;
+	}
+	public int getAlto() {
+		return alto;
+	}
+	public void setAlto(int alto) {
+		this.alto = alto;
+	}
+	public boolean isTocaConIsla() {
+		return tocaConIsla;
+	}
+	public void setTocaConIsla(boolean tocaConIsla) {
+		this.tocaConIsla = tocaConIsla;
+	}
+	public boolean isTocaConHeroe() {
+		return tocaConHeroe;
+	}
+	public void setTocaConHeroe(boolean tocaConHeroe) {
+		this.tocaConHeroe = tocaConHeroe;
+	}
+	public boolean isTocaConGnomo() {
+		return tocaConGnomo;
+	}
+	public void setTocaConGnomo(boolean tocaConGnomo) {
+		this.tocaConGnomo = tocaConGnomo;
+	}
+	public boolean isAdelanteNoHayIsla() {
+		return adelanteNoHayIsla;
+	}
+	public void setAdelanteNoHayIsla(boolean adelanteNoHayIsla) {
+		this.adelanteNoHayIsla = adelanteNoHayIsla;
+	}
+	public boolean isTocaConDisparo() {
+		return tocaConDisparo;
+	}
+	public void setTocaConDisparo(boolean tocaConDisparo) {
+		this.tocaConDisparo = tocaConDisparo;
+	}
+	public Isla getIslaToca() {
+		return islaToca;
+	}
+	public void setIslaToca(Isla islaToca) {
+		this.islaToca = islaToca;
+	}
+	public int getDireccion() {
+		return direccion;
+	}
+	public void setDireccion(int direccion) {
+		this.direccion = direccion;
+	}
+	public double getVelocidad() {
+		return velocidad;
+	}
+	public void setVelocidad(double velocidad) {
+		this.velocidad = velocidad;
+	}
+	public Image getImg() {
+		return img;
+	}
+	public void setImg(Image img) {
+		this.img = img;
+	}
+	public int[] getIslasTortugas() {
+		return islasTortugas;
+	}
+	public void setIslasTortugas(int[] islasTortugas) {
+		this.islasTortugas = islasTortugas;
+	}
+	public Random getRandom() {
+		return random;
+	}
+	public void setRandom(Random random) {
+		this.random = random;
+	}
+	public boolean isIzqODer() {
+		return IzqODer;
+	}
+	public void setIzqODer(boolean izqODer) {
+		IzqODer = izqODer;
+	}
+	public int getAzar() {
+		return azar;
+	}
+	public void setAzar(int azar) {
+		this.azar = azar;
 	}
 }
 

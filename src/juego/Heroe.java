@@ -1,22 +1,20 @@
 package juego;
 
-import java.awt.Color;
 import java.awt.Image;
-import java.awt.Point;
 
 import entorno.Entorno;
 import entorno.Herramientas;
 
 public class Heroe {
-	double x = 400;
-	double y = 475;
-	int largo = 37;
-	int alto = 12;
-	boolean enisla = false;
-	double velocidad = 1.5;
-	double gravedad = 1;
-	Boolean saltando = false;
-	Image img = Herramientas.cargarImagen("Elheroe.gif");
+	private double x = 400;
+	private double y = 475;
+	private int largo = 37;
+	private int alto = 12;
+	private boolean enisla = false;
+	private double velocidad = 1.5;
+	private double gravedad = 1;
+	private boolean saltando = false;
+	private Image img = Herramientas.cargarImagen("Elheroe.gif");
 
 	public void dibujarheroe(Entorno entorno) {
 		entorno.dibujarImagen(img, this.x, this.y,0,0.15);
@@ -27,7 +25,7 @@ public class Heroe {
 	}
 	public boolean tocaPorArriba(Isla []islas) {
 		for(Isla i:islas) {
-			if (this.x + 9 - this.largo / 2 <= i.x + i.alto/ 2 && this.x - 9 + this.largo / 2 >= i.x - i.alto / 2 && this.y - 18.5 - this.alto / 2 <= i.y + i.largo / 2 && this.y + this.alto / 2 >= i.y - i.largo / 2) {
+			if (this.x + 9 - this.largo / 2 <= i.getX() + i.getAlto()/ 2 && this.x - 9 + this.largo / 2 >= i.getX() - i.getAlto() / 2 && this.y - 18.5 - this.alto / 2 <= i.getY() + i.getLargo() / 2 && this.y + this.alto / 2 >= i.getY() - i.getLargo() / 2) {
 				return true;
 			}
 		}
@@ -58,7 +56,7 @@ public class Heroe {
 	boolean estaTocandoHeroe=false;
 	public void colisionConIsla(Isla islas[]) {
 		for (Isla i : islas) {
-			if(colision(i.x, i.y ,i.largo, i.alto , this.x, this.y, this.largo, this.alto)) {
+			if(colision(i.getX(), i.getY() ,i.getLargo(), i.getAlto() , this.x, this.y, this.largo, this.alto)) {
 				this.estaTocandoHeroe = true;
 				return;
 			}
@@ -71,6 +69,66 @@ public class Heroe {
 			this.saltando = true;
 			this.y += this.gravedad;
 		}
+	}
+	public double getX() {
+		return x;
+	}
+	public void setX(double x) {
+		this.x = x;
+	}
+	public double getY() {
+		return y;
+	}
+	public void setY(double y) {
+		this.y = y;
+	}
+	public int getLargo() {
+		return largo;
+	}
+	public void setLargo(int largo) {
+		this.largo = largo;
+	}
+	public int getAlto() {
+		return alto;
+	}
+	public void setAlto(int alto) {
+		this.alto = alto;
+	}
+	public boolean isEnisla() {
+		return enisla;
+	}
+	public void setEnisla(boolean enisla) {
+		this.enisla = enisla;
+	}
+	public double getVelocidad() {
+		return velocidad;
+	}
+	public void setVelocidad(double velocidad) {
+		this.velocidad = velocidad;
+	}
+	public double getGravedad() {
+		return gravedad;
+	}
+	public void setGravedad(double gravedad) {
+		this.gravedad = gravedad;
+	}
+	public boolean isSaltando() {
+		return saltando;
+	}
+	public void setSaltando(boolean saltando) {
+		this.saltando = saltando;
+	}
+	public Image getImg() {
+		return img;
+	}
+	public void setImg(Image img) {
+		this.img = img;
+	}
+	public boolean isEstaTocandoHeroe() {
+		return estaTocandoHeroe;
+	}
+	public void setEstaTocandoHeroe(boolean estaTocandoHeroe) {
+		this.estaTocandoHeroe = estaTocandoHeroe;
 	}
 	
 }

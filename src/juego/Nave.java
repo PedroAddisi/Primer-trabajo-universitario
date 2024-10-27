@@ -1,20 +1,19 @@
 package juego;
 
-import java.awt.Color;
 import java.awt.Image;
 
 import entorno.Entorno;
 import entorno.Herramientas;
 
 public class Nave {
-	double x = 400;
-	double y = 590;
-	double largo = 10;
-	double alto = 52;
-	boolean tocaConGnomo;
-	boolean tocaConHeroe;
-	double velocidad =1.5;
-	Image img=Herramientas.cargarImagen("Nave.png");
+	private double x = 400;
+	private double y = 590;
+	private double largo = 10;
+	private double alto = 52;
+	private boolean tocaConGnomo;
+	private boolean tocaConHeroe;
+	private double velocidad =1.5;
+	private Image img=Herramientas.cargarImagen("Nave.png");
 	public void dibujarnave(Entorno entorno) {
 		entorno.dibujarImagen(img, x, y, 0, 0.05);
 	
@@ -23,8 +22,8 @@ public class Nave {
 		
 		return x1 - l1 / 2 <= x2 + l2 / 2  && x1 + l1 / 2 >= x2 - l2 / 2 && y1 - a1 / 2 <= y2 + a2 / 2 && y1 + a1 / 2 >= y2 - a2 / 2;
 	}
-	public void colisionConGnomo(Gnomo h) {
-	if(colision(h.x, h.y , h.largo, h.alto , this.x, this.y, this.largo, this.alto)) {
+	public void colisionConGnomo(Gnomo g) {
+	if(colision(g.getX(), g.getY() , g.getLargo(), g.getAlto() , this.x, this.y, this.largo, this.alto)) {
 		this.tocaConGnomo = true;
 	}
 	else{
@@ -33,7 +32,7 @@ public class Nave {
 	
 }
 	public void colisionConHeroe(Heroe h) {
-	if(colision(h.x, h.y , h.largo, h.alto , this.x, this.y, this.largo, this.alto)) {
+	if(colision(h.getX(), h.getY() , h.getLargo(), h.getAlto() , this.x, this.y, this.largo, this.alto)) {
 		this.tocaConHeroe = true;
 	}
 	else{
@@ -46,5 +45,52 @@ public class Nave {
 	public void moverAtras() {
 		this.x += 1 * (-velocidad);
 	}
-
+	public double getX() {
+		return x;
+	}
+	public void setX(double x) {
+		this.x = x;
+	}
+	public double getY() {
+		return y;
+	}
+	public void setY(double y) {
+		this.y = y;
+	}
+	public double getLargo() {
+		return largo;
+	}
+	public void setLargo(double largo) {
+		this.largo = largo;
+	}
+	public double getAlto() {
+		return alto;
+	}
+	public void setAlto(double alto) {
+		this.alto = alto;
+	}
+	public boolean isTocaConGnomo() {
+		return tocaConGnomo;
+	}
+	public void setTocaConGnomo(boolean tocaConGnomo) {
+		this.tocaConGnomo = tocaConGnomo;
+	}
+	public boolean isTocaConHeroe() {
+		return tocaConHeroe;
+	}
+	public void setTocaConHeroe(boolean tocaConHeroe) {
+		this.tocaConHeroe = tocaConHeroe;
+	}
+	public double getVelocidad() {
+		return velocidad;
+	}
+	public void setVelocidad(double velocidad) {
+		this.velocidad = velocidad;
+	}
+	public Image getImg() {
+		return img;
+	}
+	public void setImg(Image img) {
+		this.img = img;
+	}
 }
