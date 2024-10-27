@@ -114,7 +114,7 @@ public class Juego extends InterfaceJuego
 		pantalladeinicio = Herramientas.cargarImagen("inicioo.jpg");
 		casa = Herramientas.cargarImagen("casa.png");
 		gameover = Herramientas .cargarImagen("gameover.png");
-	//	Herramientas.loop("Sountrack.wav");
+		Herramientas.loop("Sountrack.wav");
 		// Inicia el juego!
 		this.entorno.iniciar();
 		//
@@ -162,6 +162,9 @@ public class Juego extends InterfaceJuego
 		heroe.dibujarheroe(entorno);
 		nave.dibujarnave(entorno);
 		nave.setX(entorno.mouseX());
+		if(heroe.getY() == 600 ) {
+			Herramientas.play("Dead.wav");
+		}
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			heroe.moverAdelante();
 			visionHeroe = entorno.TECLA_DERECHA; 
@@ -175,7 +178,6 @@ public class Juego extends InterfaceJuego
 				if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
 					heroe.setSaltando(true);
 					heroe.SaltoIzq(islas);
-					//Herramientas.play("Salto.wav");
 				}
 		}
 		if(visionHeroe == entorno.TECLA_DERECHA) {
@@ -185,9 +187,12 @@ public class Juego extends InterfaceJuego
 			}
 				}
 		if(entorno.sePresiono(entorno.TECLA_ARRIBA)) {
-			//Herramientas.play("Salto.wav");	
+			Herramientas.play("Salto.wav");	
 		}
 		//DISPARO DEL HEROE
+		if(entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+			Herramientas.play("Fire.wav");
+		}
 		Disparo.desaparece(heroe);
 		if(entorno.sePresiono(entorno.TECLA_ESPACIO)) {
 			Disparo.setDisparo(true);
@@ -220,6 +225,7 @@ public class Juego extends InterfaceJuego
 						if(gnomos[i].isTocaConTortuga()) {
 							gnomos[i] = null;
 							muertos++;
+							Herramientas.play("Grito.wav");
 						}
 					}
 				}
@@ -228,6 +234,7 @@ public class Juego extends InterfaceJuego
 				if(gnomos[i].isTocaConHeroe() && gnomos[i].getY()>200 || nave.isTocaConGnomo() == true) {
 					gnomos[i] = null;
 					salvados++;
+					Herramientas.play("Gracias.wav");
 				}
 				else if (gnomos[i].getY() >= 605) {
 					gnomos[i] = null;
@@ -270,7 +277,7 @@ public class Juego extends InterfaceJuego
 	}
 			
 			try {
-	            if(this.tiempo < 0 || this.muertos >= 5 ||heroe.getY() >= 600) {
+	            if(this.tiempo < 0 || this.muertos >= 5 ||heroe.getY() >= 600 || tortuga.isTocaConHeroe()) {
 	                this.PantallaGameOver = true;
 	            }
 	            if(this.PantallaGameOver == true) {
