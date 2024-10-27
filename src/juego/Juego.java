@@ -128,6 +128,7 @@ public class Juego extends InterfaceJuego
 		entorno.escribirTexto("Click derecho para empezar", 300, 500);
 		entorno.cambiarFont("Arial",40, Color.BLACK);
 		entorno.escribirTexto("La carniceria de los Orcos", 180, 100);
+		try {
 		if(entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {
 			this.PantalladeInicio = false;
 		}
@@ -263,13 +264,22 @@ public class Juego extends InterfaceJuego
 				}
 			}
 		}
-
-		if(this.tiempo < 0 || this.muertos >= 5 || heroe.getY() >= 600) {
-			this.PantallaGameOver = true;
-		}
-		if(this.PantallaGameOver == true) {
-			entorno.dibujarImagen(gameover, 400, 300, 0, 3.5);
-		}
+	}
+	catch(Exception ex) {
+		//System.out.println("Esperando instruccion pantalla de inicio");
+	}
+			
+			try {
+	            if(this.tiempo < 0 || this.muertos >= 5 ||heroe.getY() >= 600) {
+	                this.PantallaGameOver = true;
+	            }
+	            if(this.PantallaGameOver == true) {
+	                entorno.dibujarImagen(gameover, 400, 300, 0, 3.5);
+	            }
+	        }
+	        catch(Exception ex){
+	        	//System.out.println("Todavia no se perdio, no carga pantalla game over");
+	        }
 }
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {

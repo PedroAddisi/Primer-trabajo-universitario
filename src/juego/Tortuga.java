@@ -36,8 +36,6 @@ public class Tortuga {
 		if (IzqODer == true) {
 			this.x=islas[islasTortugas[azar]].getX()+islas[islasTortugas[azar]].getAlto()/4;
 		}
-		System.out.println(azar);
-		System.out.println(IzqODer);
 	}
 	public void elegirAzar(Tortuga tortugas[]) {
 		for (Tortuga t: tortugas) {
