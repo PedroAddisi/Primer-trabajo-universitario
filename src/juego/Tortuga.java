@@ -21,17 +21,36 @@ public class Tortuga {
 	int direccion=-1;
 	double velocidad = 0.3;
 	Image img = Herramientas.cargarImagen("OrcoFinal.gif");
+	int islasTortugas[]={0,4,9,11};
+	Random random= new Random();
+	boolean IzqODer;
+	int xTortuga;
+	int azar;
 	
-	public Tortuga() {
-		Random random = new Random();
-		boolean azar = random.nextBoolean();
-		if(azar) {
-			this.x = Math.random()*(305)+40;
+	public Tortuga(Isla islas[], Tortuga tortugas[]) {
+		azar=(int)(Math.random()*4);
+		IzqODer = random.nextBoolean();
+		this.elegirAzar(tortugas);	
+		if (IzqODer == false) {
+			this.x=Math.random()*(islas[islasTortugas[azar]].alto/2+1)+(islas[islasTortugas[azar]].x);
 		}
-		else {
-			this.x = Math.random()*(305)+456;
+		if (IzqODer == true) {
+			this.x=Math.random()*(islas[islasTortugas[azar]].alto/2+1)+(islas[islasTortugas[azar]].x-islas[islasTortugas[azar]].alto/2);
 		}
-		
+		System.out.println(azar);
+		System.out.println(IzqODer);
+	}
+	public void elegirAzar(Tortuga tortugas[]) {
+		for (Tortuga t: tortugas) {
+			if(t !=null) {
+			if ((t.azar == this.azar && this.IzqODer == t.IzqODer)) {
+				this.azar= (int) (Math.random()*4);
+				this.IzqODer= random.nextBoolean();
+				this.elegirAzar(tortugas);
+				}
+			}
+		}
+		return;
 	}
 	public void dibujarTortuga(Entorno entorno) {
 		entorno.dibujarImagen(img, this.x, this.y, 0, 0.18);
@@ -117,7 +136,6 @@ public class Tortuga {
 		}
 		if(this.tocaConDisparo == true) {
 			t.disparo=false;
-			this.x = 400;//aca en vez de 400 hacerla null y joya
 		}
 	}
 }

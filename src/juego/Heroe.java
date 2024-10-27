@@ -44,14 +44,16 @@ public class Heroe {
 	}
 	}
 	public void SaltoIzq(Isla [] islas) {
-		if(!this.tocaPorArriba(islas))
+		if(!this.tocaPorArriba(islas)) {
 			this.y -= 2;
-		this.x -= 0.2;
+			this.x -= 0.2;
+		}
 	}
 	public void SaltoDer(Isla [] islas) {
-		if(!this.tocaPorArriba(islas))
+		if(!this.tocaPorArriba(islas)) {
 			this.y -= 2;
-		this.x += 0.2;
+			this.x += 0.2;	
+		}
 	}
 	boolean estaTocandoHeroe=false;
 	public void colisionConIsla(Isla islas[]) {
