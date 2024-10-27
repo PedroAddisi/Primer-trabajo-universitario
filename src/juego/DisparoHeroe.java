@@ -1,6 +1,6 @@
 package juego;
 
-import java.awt.Color;
+
 import java.awt.Image;
 import entorno.Entorno;
 import entorno.Herramientas;
@@ -9,16 +9,14 @@ double x;
 double y;
 double alto = 10;
 double largo = 10;
-Color c = Color.BLACK;
 boolean disparo = false;
-double velocidad =1.5;
+double velocidad =3.5;
 Image img = Herramientas.cargarImagen("Bola de fuego.gif");
 public DisparoHeroe(Heroe h) {
 	this.x = h.x;
 	this.y = h.y;
 	}
 public void DIbujarDisparo(Entorno entorno) {
-	//entorno.dibujarRectangulo(x, y, alto, largo , 0, c );
 	entorno.dibujarImagen(img, x, y, 0, 0.5);
 }
 boolean colision(double x1, double y1, double a1, double l1, double x2, double y2, double a2, double l2) {

@@ -258,16 +258,19 @@ public class Juego extends InterfaceJuego
 				tortugas[i].movimiento(islas);
 				tortugas[i].colisionConHeroe(heroe);
 				tortugas[i].colisionConDisparo(Disparo);
+				if (tortugas[i].tocaConDisparo==true) {
+					tortugas[i]=null;
+					}
 				}
 			}
 		}
 
-//		if(this.tiempo < 0 || this.muertos >= 5 || heroe.y >= 600) {
-//			this.PantallaGameOver = true;
-//		}
-//		if(this.PantallaGameOver == true) {
-//			entorno.dibujarImagen(gameover, 400, 300, 0, 3.5);
-//		}
+		if(this.tiempo < 0 || this.muertos >= 5 || heroe.y >= 600) {
+			this.PantallaGameOver = true;
+		}
+		if(this.PantallaGameOver == true) {
+			entorno.dibujarImagen(gameover, 400, 300, 0, 3.5);
+		}
 }
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {

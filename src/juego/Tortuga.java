@@ -32,10 +32,10 @@ public class Tortuga {
 		IzqODer = random.nextBoolean();
 		this.elegirAzar(tortugas);	
 		if (IzqODer == false) {
-			this.x=Math.random()*(islas[islasTortugas[azar]].alto/2+1)+(islas[islasTortugas[azar]].x);
+			this.x=islas[islasTortugas[azar]].x-islas[islasTortugas[azar]].alto/4;
 		}
 		if (IzqODer == true) {
-			this.x=Math.random()*(islas[islasTortugas[azar]].alto/2+1)+(islas[islasTortugas[azar]].x-islas[islasTortugas[azar]].alto/2);
+			this.x=islas[islasTortugas[azar]].x+islas[islasTortugas[azar]].alto/4;
 		}
 		System.out.println(azar);
 		System.out.println(IzqODer);
@@ -133,9 +133,6 @@ public class Tortuga {
 		}
 		else {
 			this.tocaConDisparo=false;
-		}
-		if(this.tocaConDisparo == true) {
-			t.disparo=false;
 		}
 	}
 }
