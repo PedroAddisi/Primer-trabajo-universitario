@@ -11,11 +11,11 @@ public class Isla {
 	private double largo;
 	private double y;
 	private Image img1;
-	public Isla(double x, double y, int alto, int largo) {
-		this.x = x;
-		this.y = y;
-		this.alto = alto;
-		this.largo = largo;
+	public Isla(double x, double y, int largo, int alto) {
+		this.setX(x);
+		this.setY(y);
+		this.setAlto(alto);
+		this.setLargo(largo);
 		img1 = Herramientas.cargarImagen("isla.png");
 		}
 	public void dibujarisla(Entorno entorno) {

@@ -66,7 +66,7 @@ public class Heroe {
 	public void gravedadHeroe(Isla[] islas) {
 		this.colisionConIsla(islas);
 		if (!this.estaTocandoHeroe && !this.saltando || this.tocaPorArriba(islas)  ) {
-			this.saltando = true;
+			this.saltando = false;
 			this.y += this.gravedad;
 		}
 	}

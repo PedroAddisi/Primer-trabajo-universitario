@@ -75,12 +75,12 @@ public class Juego extends InterfaceJuego
 	                ejeY -= 106;
 	            }
 	            else if (indice == 0) {
-	                islas[0] = new Isla (ejeX, ejeY, largo, alto);
+	                islas[0] = new Isla (ejeX, ejeY, alto, largo);
 	            }
 	            else if (indice != 0) {
 	                ejeX += 152;
 	            }
-	        islas[indice]= new Isla(ejeX, ejeY, largo, alto);
+	        islas[indice]= new Isla(ejeX, ejeY, alto, largo);
 	        indice++;
 	        numDeIslaEnFila++;
 	        }
@@ -287,9 +287,22 @@ public class Juego extends InterfaceJuego
 	        catch(Exception ex){
 	        	//System.out.println("Todavia no se perdio, no carga pantalla game over");
 	        }
+			try {
+
+			 if(this.salvados >= 10) {
+	            	this.PantalladeInicio=true;
+	            }
+			 if(this.PantalladeInicio == true) {
+				 entorno.dibujarImagen(pantalladeinicio, 400 , 300, 0); 
+			 }
+			}
+			catch(Exception ex){
+	        	//System.out.println("Todavia no se perdio, no carga pantalla game over");
+	        }
 }
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Juego juego = new Juego();
 	}
+	
 }
