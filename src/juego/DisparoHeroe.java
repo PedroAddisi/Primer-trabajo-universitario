@@ -16,23 +16,23 @@ public DisparoHeroe(Heroe h) {
 	this.x = h.getX();
 	this.y = h.getY();
 	}
-public void DIbujarDisparo(Entorno entorno) {
+public void DIbujarDisparo(Entorno entorno) {//funcion encargada de dibujar el objeto
 	entorno.dibujarImagen(img, x, y, 0, 0.5);
 }
-boolean colision(double x1, double y1, double a1, double l1, double x2, double y2, double a2, double l2) {
+boolean colision(double x1, double y1, double a1, double l1, double x2, double y2, double a2, double l2) {//booleano que pregunta si colisiona con algun objeto
 	
 	return x1 - l1 / 2 <= x2 + l2 / 2  && x1 + l1 / 2 >= x2 - l2 / 2 && y1 - a1 / 2 <= y2 + a2 / 2 && y1 + a1 / 2 >= y2 - a2 / 2;
 	}
-public void direcDer() {
+public void direcDer() {//valor para que el disparo vaya a la derecha
 		this.velocidad = 1.5;
 }
-public void direcIzq() {
+public void direcIzq() {//valor para que el disparo vaya a la izquierda
 		this.velocidad =- 1.5;
 		}
-public void mover() {
+public void mover() {//le otorga movimiento al disparo
 	this.x += this.velocidad;
 }
-public void desaparece(Heroe heroe) {
+public void desaparece(Heroe heroe) {//si el disparo se va de la pantalla desaparece
 	if(this.x < 0 || this.x >800) {
 		this.disparo = false;
 		}

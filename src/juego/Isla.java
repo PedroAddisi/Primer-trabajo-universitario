@@ -18,7 +18,7 @@ public class Isla {
 		this.setLargo(largo);
 		img1 = Herramientas.cargarImagen("isla.png");
 		}
-	public void dibujarisla(Entorno entorno) {
+	public void dibujarisla(Entorno entorno) {//Dibuja el objeto en la pantalla
 		entorno.dibujarImagen(img1, x, y- 12, 0,0.4);
 		}
 	public double getX() {

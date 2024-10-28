@@ -88,17 +88,6 @@ public class Tortuga {
 	public void avanzar() {
 		this.x += this.velocidad*this.direccion;
 	}
-	
-//	public void colisionAdelante(Isla islas[]) {
-//		for (Isla i : islas) {
-//			if(colision(i.x, i.y ,i.largo, i.alto , (this.x + this.velocidad) , this.y, this.largo, this.alto)) {
-//				this.adelanteNoHayIsla = true;
-//				return;
-//			}
-//			else {
-//				this.adelanteNoHayIsla = false;
-//			}
-//		}
 	public void colisionAdelante() {
 		if(islaToca !=null) {
 			if (!colision(this.islaToca.getX(), this.islaToca.getY(),this.islaToca.getLargo(), this.islaToca.getAlto(), this.x+1*this.direccion, this.y, this.largo,this.alto)) {
@@ -136,12 +125,20 @@ public class Tortuga {
 		return x;
 	}
 	public void setX(double x) {
+		if(this.x > 800 || this.x < 0) {
+			 System.out.println("Orco fuera de mapa");
+			 return;	
+			}
 		this.x = x;
 	}
 	public double getY() {
 		return y;
 	}
 	public void setY(double y) {
+		if(this.y > 610 || this.y < 0) {
+			 System.out.println("orco fuera de mapa");
+			 return;
+		}
 		this.y = y;
 	}
 	public int getLargo() {

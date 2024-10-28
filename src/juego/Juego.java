@@ -38,6 +38,7 @@ public class Juego extends InterfaceJuego
 	int muertos = 0;
 	int guardoIndiceTortuga=-1;
 	int guardoIndiceGnomo=-1;
+	static int Nivel =1;
 	Random random;
 	//Generacion de islas
 	public Gnomo[] generadorDeGnomos() {
@@ -96,7 +97,7 @@ public class Juego extends InterfaceJuego
 		//Tiempo
         tiempo = 120.0;
 		// Inicializa el objeto entorno
-		this.entorno = new Entorno(this, "Navecitas-Grupo Nr.", 800, 600);
+		this.entorno = new Entorno(this, "Al rescate de los Gnomos", 800, 600);
 		//
 		// islas
 		islas = this.generadorIslas();
@@ -186,11 +187,11 @@ public class Juego extends InterfaceJuego
 				heroe.SaltoDer(islas);
 			}
 				}
-		if(entorno.sePresiono(entorno.TECLA_ARRIBA)) {
+		if(entorno.sePresiono(entorno.TECLA_ARRIBA) && this.PantalladeInicio == false && this.PantallaGameOver == false) {
 			Herramientas.play("Salto.wav");	
 		}
 		//DISPARO DEL HEROE
-		if(entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+		if(entorno.sePresiono(entorno.TECLA_ESPACIO) && this.PantalladeInicio == false && this.PantallaGameOver == false) {
 			Herramientas.play("Fire.wav");
 		}
 		Disparo.desaparece(heroe);
@@ -264,6 +265,10 @@ public class Juego extends InterfaceJuego
 				tortugas[i].dibujarTortuga(entorno);
 				tortugas[i].movimiento(islas);
 				tortugas[i].colisionConHeroe(heroe);
+				if(tortugas[i].isTocaConHeroe()) {
+					this.PantallaGameOver=true;
+					Herramientas.play("Dead.wav");
+				}
 				tortugas[i].colisionConDisparo(Disparo);
 				if (tortugas[i].isTocaConDisparo()==true) {
 					tortugas[i]=null;
@@ -277,7 +282,7 @@ public class Juego extends InterfaceJuego
 	}
 			
 			try {
-	            if(this.tiempo < 0 || this.muertos >= 5 ||heroe.getY() >= 600 || tortuga.isTocaConHeroe()) {
+	            if(this.tiempo < 0 || this.muertos >= 5 ||heroe.getY() >= 600) {
 	                this.PantallaGameOver = true;
 	            }
 	            if(this.PantallaGameOver == true) {
@@ -291,6 +296,7 @@ public class Juego extends InterfaceJuego
 
 			 if(this.salvados >= 10) {
 	            	this.PantalladeInicio=true;
+	            	Nivel+=1;
 	            }
 			 if(this.PantalladeInicio == true) {
 				 entorno.dibujarImagen(pantalladeinicio, 400 , 300, 0); 

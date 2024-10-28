@@ -91,12 +91,20 @@ public class Gnomo {
 		return x;
 	}
 	public void setX(double x) {
+		if(this.x > 800 || this.x < 0) {
+			 System.out.println("Gnomo fuera de mapa");
+			 return;
+			}
 		this.x = x;
 	}
 	public double getY() {
 		return y;
 	}
 	public void setY(double y) {
+		if(this.y > 610 || this.y < 0) {
+			 System.out.println("gnomo fuera de mapa");
+			 return;
+		}
 		this.y = y;
 	}
 	public int getLargo() {
