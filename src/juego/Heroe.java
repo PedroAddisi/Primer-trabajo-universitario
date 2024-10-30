@@ -22,6 +22,7 @@ public class Heroe {
 	boolean colision(double x1, double y1, double a1, double l1, double x2, double y2, double a2, double l2) {//Booleano el cual pregunta se hace colision con algun objeto
 		
 		return x1 - l1 / 2 <= x2 + l2 / 2  && x1 + l1 / 2 >= x2 - l2 / 2 && y1 - a1 / 2 <= y2 + a2 / 2 && y1 + a1 / 2 >= y2 - a2 / 2;
+		//toma al punto x e y de ambos objetos y calcula sus bordes, si estos se tocan o se pasan retorna true
 	}
 	public boolean tocaPorArriba(Isla []islas) {//booleano el cual da true si el personaje toca una isla con la cabeza
 		for(Isla i:islas) {

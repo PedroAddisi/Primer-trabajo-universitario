@@ -37,10 +37,10 @@ public class Tortuga {
 			this.x=islas[islasTortugas[azar]].getX()+islas[islasTortugas[azar]].getAlto()/4;
 		}
 	}
-	public void elegirAzar(Tortuga tortugas[]) {
-		for (Tortuga t: tortugas) {
+	public void elegirAzar(Tortuga tortugas[]) {//Elige de manera al azar en que isla caera la tortuga
+		for (Tortuga t: tortugas) {// se encarga de corroborar que no exista tortuga en esa isla 
 			if(t !=null) {
-			if ((t.azar == this.azar && this.IzqODer == t.IzqODer)) {
+			if ((t.azar == this.azar && this.IzqODer == t.IzqODer)) {//en caso de que haya una tortgua en esa isla decide de manera al azar otra en la que pueda caer
 				this.azar= (int) (Math.random()*4);
 				this.IzqODer= random.nextBoolean();
 				this.elegirAzar(tortugas);
@@ -49,15 +49,16 @@ public class Tortuga {
 		}
 		return;
 	}
-	public void dibujarTortuga(Entorno entorno) {
+	public void dibujarTortuga(Entorno entorno) {// se encarga de dibujar la imagen e imprimarla en pantalla
 		entorno.dibujarImagen(img, this.x, this.y, 0, 0.18);
 	}
-	boolean colision(double x1, double y1, double a1, double l1, double x2, double y2, double a2, double l2) {
+	boolean colision(double x1, double y1, double a1, double l1, double x2, double y2, double a2, double l2) {//Booleano el cual pregunta se hace colision con algun objeto
 		
 		return x1 - l1 / 2 <= x2 + l2 / 2  && x1 + l1 / 2 >= x2 - l2 / 2 && y1 - a1 / 2 <= y2 + a2 / 2 && y1 + a1 / 2 >= y2 - a2 / 2;
+		//toma al punto x e y de ambos objetos y calcula sus bordes, si estos se tocan o se pasan retorna true
 	}
 	
-	public void colisionConHeroe(Heroe h) {
+	public void colisionConHeroe(Heroe h) {//detecta si la tortuga hace colision con el heroe
 		if(colision(h.getX(), h.getY() , h.getLargo(), h.getAlto() , this.x, this.y, this.largo, this.alto)) {
 			this.tocaConHeroe = true;
 		}
@@ -66,7 +67,7 @@ public class Tortuga {
 		}
 	}
 	
-	public void colisionConGnomo(Heroe h) {
+	public void colisionConGnomo(Heroe h) {//detecta si la tortuga hace colision con el gnomo
 		if(colision(h.getX(), h.getY() , h.getLargo(), h.getAlto() , this.x, this.y, this.largo, this.alto)) {
 			this.tocaConGnomo = true;
 		}
@@ -74,7 +75,7 @@ public class Tortuga {
 			this.tocaConGnomo = false;
 		}
 	}	
-	public void colisionConIsla(Isla islas[]) {
+	public void colisionConIsla(Isla islas[]) {//detecta si la tortuga hace colision con la isla 
 		for (Isla i : islas) {
 			if(colision(i.getX(), i.getY() ,i.getLargo(), i.getAlto() , this.x, this.y, this.largo, this.alto)) {
 				this.tocaConIsla = true;
@@ -85,10 +86,10 @@ public class Tortuga {
 		this.tocaConIsla  = false;
 	}
 	
-	public void avanzar() {
+	public void avanzar() {//la tortuga se mueve para la direccion deseada
 		this.x += this.velocidad*this.direccion;
 	}
-	public void colisionAdelante() {
+	public void colisionAdelante() {// corrobora si delante de la tortgua sigue existiendo un punto de la isla 
 		if(islaToca !=null) {
 			if (!colision(this.islaToca.getX(), this.islaToca.getY(),this.islaToca.getLargo(), this.islaToca.getAlto(), this.x+1*this.direccion, this.y, this.largo,this.alto)) {
 				this.adelanteNoHayIsla = true;
@@ -99,21 +100,21 @@ public class Tortuga {
 			}
 		}
 	}
-	public void cambiarDireccion() {
+	public void cambiarDireccion() {//cambia el movimiento de la tortugs
 		this.direccion = this.direccion*-1;
 	}
-	public void movimiento(Isla islas[]) {
+	public void movimiento(Isla islas[]) {//utiliza las funciones anteriores para determinar el movimiento 
 		this.colisionConIsla(islas);
-		if(!tocaConIsla) {
+		if(!tocaConIsla) {//generamos la "gravedad"
 			y += 1;
 		}else {
 			this.avanzar();
 		}
-		if(adelanteNoHayIsla) {
+		if(adelanteNoHayIsla) {//cambia la direccion para no caer
 			this.cambiarDireccion();
 		}
 	}
-	public void colisionConDisparo(DisparoHeroe t) {
+	public void colisionConDisparo(DisparoHeroe t) {//detecta si la tortuga hace colision con el disparo del heroe 
 		if(colision(t.getX(), t.getY(), t.getLargo(), t.getAlto(), this.x, this.y, this.largo, this.alto)) {
 			this.tocaConDisparo=true;
 		}

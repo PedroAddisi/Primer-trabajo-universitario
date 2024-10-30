@@ -18,10 +18,10 @@ public class Gnomo {
 	private boolean caer = false;
 	private Image img = Herramientas.cargarImagen("Enano final.gif");
 
-	public void dibujargnomo(Entorno entorno) {
+	public void dibujargnomo(Entorno entorno) {//se encarga de dibujar la imagen en pantalla 
 		entorno.dibujarImagen(img, this.x, this.y, 0, 0.2);
 	}
-	public void elegirDireccion() {
+	public void elegirDireccion() {// decide de forma al azar la direccion
 		Random derechaOIzquierda = new Random();
 		boolean direc = derechaOIzquierda.nextBoolean(); //Genero un booleano random
 		if (direc) { //Si es verdadero va para la derecha
@@ -33,59 +33,60 @@ public class Gnomo {
 		//La velocidad se multiplicara por este numero para q camine hacia ese lado
 		this.velocidad = this.velocidad*this.direccion;
 	}
-	public void colisionConHeroe(Heroe h) {
-			if(colisionPrueba(h.getX(), h.getY() , h.getLargo(), h.getAlto() , this.x, this.y, this.largo, this.alto)) {
+	public void colisionConHeroe(Heroe h) {// verifica si el gnomo hace colision con el heroe o no
+			if(Colision(h.getX(), h.getY() , h.getLargo(), h.getAlto() , this.x, this.y, this.largo, this.alto)) {
 				this.tocaConHeroe = true;
 			}
 			else{
 				this.tocaConHeroe = false;
 			}
 	}
-	public void colisionConTortuga(Tortuga t) {
-		if(colisionPrueba(t.getX(), t.getY(), t.getLargo(), t.getAlto(), this.x, this.y, this.largo, this.alto)) {
+	public void colisionConTortuga(Tortuga t) {// verifica si el gnomo hace colision con la tortuga o no
+		if(Colision(t.getX(), t.getY(), t.getLargo(), t.getAlto(), this.x, this.y, this.largo, this.alto)) {
 			this.tocaConTortuga = true;
 		}
 		else {
 			this.tocaConTortuga = false;
 		}
 	}
-	public void colisionConIsla(Isla islas[]) {
+	public void colisionConIsla(Isla islas[]) {// verifica si el gnomo hace colision con la isla o no
 		for (Isla i : islas) {
-			if(colisionPrueba(i.getX(), i.getY() ,i.getLargo(), i.getAlto() , this.x, this.y, this.largo, this.alto)) {
+			if(Colision(i.getX(), i.getY() ,i.getLargo(), i.getAlto() , this.x, this.y, this.largo, this.alto)) {
 				this.tocaConIsla = true;
 				return;
 			}
 		}
 		this.tocaConIsla = false;
 	}
-	public void avanzarGnomo() {
-		if(!caer) {
+	public void avanzarGnomo() {//genera un paso hacia la direccion deseada
+		if(!caer) {//corroboramos que el gnomo no este en el aire
 			this.x += this.velocidad;
 		}
 	}
-	public void caerGnomos(Isla[] islas) {
+	public void caerGnomos(Isla[] islas) {//verifica si el gnomo esta sobre una isla o no
 		this.colisionConIsla(islas);
 		if (!this.tocaConIsla) {
-			this.y += 1;
+			this.y += 1;//genera la caida del gnomo dandole "gravedad"
 			caer = true;
 		}
 		else {
 			caer = false;
 		}
 	}
-	public void movimiento (Isla[] islas) {
-		if (!this.tocaConIsla) {
+	public void movimiento (Isla[] islas) {//utilizando las funciones anteriores determina el moviento correcto del gnomo en el entorno
+		if (!this.tocaConIsla) {//booleano para corroborar si el gnomo esta cayendo
 			this.caerGnomos(islas);
 			this.colisionConIsla(islas);
-			if(this.tocaConIsla) {
+			if(this.tocaConIsla) {// booleano que si el gnomo cae y toca isla decide direccion
 				this.elegirDireccion();
 			}
 		}
 		this.avanzarGnomo();
 	}
-	boolean colisionPrueba(double x1, double y1, double a1, double l1, double x2, double y2, double a2, double l2) {
+	boolean Colision(double x1, double y1, double a1, double l1, double x2, double y2, double a2, double l2) {//Booleano el cual pregunta se hace colision con algun objeto
 		
 		return x1 - l1 / 2 <= x2 + l2 / 2  && x1 + l1 / 2 >= x2 - l2 / 2 && y1 - a1 / 2 <= y2 + a2 / 2 && y1 + a1 / 2 >= y2 - a2 / 2;
+		//toma al punto x e y de ambos objetos y calcula sus bordes, si estos se tocan o se pasan retorna true 
 	}
 	public double getX() {
 		return x;

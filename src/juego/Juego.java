@@ -24,8 +24,6 @@ public class Juego extends InterfaceJuego
 	Double tiempo;
     String tiempomos;
     DecimalFormat decimalFormat =new DecimalFormat("#.#");
-	int largo = 112;
-	int alto = 36;
 	char visionHeroe;
 	Boolean PantalladeInicio;
 	Boolean PantallaGameOver;
@@ -41,7 +39,7 @@ public class Juego extends InterfaceJuego
 	static int Nivel =1;
 	Random random;
 	//Generacion de islas
-	public Gnomo[] generadorDeGnomos() {
+	public Gnomo[] generadorDeGnomos() {//genera un arreglo de gnomos verificando que no existan nulls
         Gnomo[]gnomos = new Gnomo[4];
         for(int i = 0; i < gnomos.length; i++) {
             if (gnomos[i] == null) {
@@ -50,42 +48,45 @@ public class Juego extends InterfaceJuego
         }
         return gnomos;
     }
-	public void generartortuga(Tortuga tortugas[]) {
+	public void generartortuga(Tortuga tortugas[]) {////genera un arreglo de tortugas verificando que no existan nulls
 		for(int i = 0; i < tortugas.length; i++) {
 			if (tortugas[i] == null) {
 				guardoIndiceTortuga=i;
 			}
-		}
-		if(guardoIndiceTortuga!=-1) {
+		}//si existe un objeto null guardo el indice para luego generar una tortgua en ese espacio del arreglo 
+		if(guardoIndiceTortuga!=-1) {//si existe un null genera una tortuga
 			tortugas[guardoIndiceTortuga]= new Tortuga(islas,tortugas);
 			guardoIndiceTortuga=-1;	
 		}
 
 	}
-	public Isla[] generadorIslas () {
+	public Isla[] generadorIslas () {//dibuja las islas dentro del entrono
 	    Isla[] islas = new Isla[15];
-	    int ejeX = 96;
-	    int ejeY = 512;
+	    int largo = 112;//le damos el valor a la primera isla
+		int alto = 36;//le damos el valor a la primera isla
+	    int ejeX = 96;//le damos el valor a la primera isla
+	    int ejeY = 512;//le damos el valor a la primera isla 
+	    int espacio = 40 ; //le damos el valor a la primera isla
 	    int indice = 0;
 	    int cantidadDeEspacios = 1;
-	    int numDeIslaEnFila = 1;
-	    int fila = 5;
-	    while(fila > 0){
+	    int numDeIslaEnFila = 1;//cuenta las islas de la fila de izquierda a derecha 
+	    int fila = 5;//decide la cantidad de islas que hay que generar en la fila 
+	    while(fila > 0){//cuenta las filas por la que va generando desde abajo hacia arriba 
 	        while (numDeIslaEnFila <= fila){
-	            if (numDeIslaEnFila == 1 && indice != 0){
+	            if (numDeIslaEnFila == 1 && indice != 0){// si es la primera de la fila tiene condicion especial 
 	                ejeY -= 106;
 	            }
-	            else if (indice == 0) {
+	            else if (indice == 0) {//genera la primera isla de todas con los valores de arriba
 	                islas[0] = new Isla (ejeX, ejeY, alto, largo);
 	            }
-	            else if (indice != 0) {
-	                ejeX += 152;
+	            else if (indice != 0) {//genera las islas en esa fila 
+	                ejeX += largo + espacio ;
 	            }
 	        islas[indice]= new Isla(ejeX, ejeY, alto, largo);
 	        indice++;
 	        numDeIslaEnFila++;
 	        }
-	    ejeX = 96 + 76 * cantidadDeEspacios;
+	    ejeX = (largo/2 + espacio) + (largo/2 + espacio/2) * cantidadDeEspacios;
 	    cantidadDeEspacios++;
 	    numDeIslaEnFila = 1;
 	    fila--;
@@ -123,21 +124,21 @@ public class Juego extends InterfaceJuego
 	}
 	public void tick() {
 		//GENERACION DE PANTALLA DE INCIO
-		tick++;
+		tick++;//cuenta los ticks
 		entorno.cambiarFont("Arial", 20, Color.WHITE);
 		entorno.dibujarImagen(pantalladeinicio, 400 , 300, 0);
 		entorno.escribirTexto("Click derecho para empezar", 300, 500);
 		entorno.cambiarFont("Arial",40, Color.BLACK);
 		entorno.escribirTexto("La carniceria de los Orcos", 180, 100);
 		try {
-		if(entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {
+		if(entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {// quita el menu para iniciar el juego
 			this.PantalladeInicio = false;
 		}
 		//
-			if(this.PantalladeInicio == false) {
+			if(this.PantalladeInicio == false) {//arranca el programa
 		//GENERACION DE TEXTO Y PANTALLA
 		tiempomos=decimalFormat.format(tiempo);
-		tiempo-= 0.015;
+		tiempo-= 0.015;//cada tick vale este valor
 		entorno.dibujarImagen(imagenFondo, 400, 300,0,1.8);
 		entorno.dibujarImagen(casa, 400,52,0,0.15);
 		entorno.cambiarFont("Arial", 32, Color.yellow);
@@ -146,26 +147,28 @@ public class Juego extends InterfaceJuego
 		entorno.escribirTexto("Muertos : " + muertos, 600, 25);
 		//
 		// GENERACION DE ISLA
-		for (Isla islas : islas) {
+		for (Isla islas : islas) {//dibuja todas las islas del arreglo
 			islas.dibujarisla(entorno);
 		}
 		//
 		//Generacion y nave
 		nave.dibujarnave(entorno);
-		nave.setX(entorno.mouseX());
+		nave.setX(entorno.mouseX());//se mueve en eje x en base a la posicion del mouse 
 		nave.colisionConHeroe(heroe);
-		if(nave.isTocaConHeroe() == true) {
+		if(nave.isTocaConHeroe() == true) {//salva al heroe
 			heroe.setX(400);
 			heroe.setY(450);
 		}
 		//
 		// GENERACION Y MOVIMIENTO DEL HEROE
 		heroe.dibujarheroe(entorno);
-		nave.dibujarnave(entorno);
-		nave.setX(entorno.mouseX());
-		if(heroe.getY() == 600 ) {
+		heroe.setSaltando(false);
+		heroe.colisionConIsla(islas);
+		heroe.gravedadHeroe(islas);
+		if(heroe.getY() == 600 ) {//si cae al vacio grita 
 			Herramientas.play("Dead.wav");
 		}
+		//comandos de movimiento del jugador
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
 			heroe.moverAdelante();
 			visionHeroe = entorno.TECLA_DERECHA; 
@@ -187,11 +190,11 @@ public class Juego extends InterfaceJuego
 				heroe.SaltoDer(islas);
 			}
 				}
-		if(entorno.sePresiono(entorno.TECLA_ARRIBA) && this.PantalladeInicio == false && this.PantallaGameOver == false) {
+		if(entorno.sePresiono(entorno.TECLA_ARRIBA)) {
 			Herramientas.play("Salto.wav");	
 		}
 		//DISPARO DEL HEROE
-		if(entorno.sePresiono(entorno.TECLA_ESPACIO) && this.PantalladeInicio == false && this.PantallaGameOver == false) {
+		if(entorno.sePresiono(entorno.TECLA_ESPACIO)) {
 			Herramientas.play("Fire.wav");
 		}
 		Disparo.desaparece(heroe);
@@ -212,10 +215,6 @@ public class Juego extends InterfaceJuego
 			Disparo.setX(heroe.getX());
 			Disparo.setY(heroe.getY());
 		}
-		//
-				heroe.setSaltando(false);
-				heroe.colisionConIsla(islas);
-				heroe.gravedadHeroe(islas);
 		//
 		//Generaracion y movimiento de gnomo
 		for (int i = 0; i < gnomos.length;i++) {
