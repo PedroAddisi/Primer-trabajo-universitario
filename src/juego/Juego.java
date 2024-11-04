@@ -129,7 +129,7 @@ public class Juego extends InterfaceJuego
 		entorno.dibujarImagen(pantalladeinicio, 400 , 300, 0);
 		entorno.escribirTexto("Click derecho para empezar", 300, 500);
 		entorno.cambiarFont("Arial",40, Color.BLACK);
-		entorno.escribirTexto("La carniceria de los Orcos", 180, 100);
+		entorno.escribirTexto("Al rescate de los Gnomos", 180, 100);
 		try {
 		if(entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {// quita el menu para iniciar el juego
 			this.PantalladeInicio = false;
@@ -293,12 +293,13 @@ public class Juego extends InterfaceJuego
 	        }
 			try {
 
-			 if(this.salvados >= 10) {
+			 if(this.salvados >= 15) {
 	            	this.PantalladeInicio=true;
 	            	Nivel+=1;
 	            }
 			 if(this.PantalladeInicio == true) {
 				 entorno.dibujarImagen(pantalladeinicio, 400 , 300, 0); 
+				 entorno.escribirTexto("Victoria", 180, 100);
 			 }
 			}
 			catch(Exception ex){
